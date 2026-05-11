@@ -1,17 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './stlyes.css'
+import styles from "./styles.module.css";
 
-function index() {
-  const [count, setCount] = useState(0)
-
+export function Home() {
   return (
-    <>
-      <h1>teste</h1>
-    </>
-  )
+    <main className={styles.home}>
+      <h1>Transforme seu corpo com treino e estratégia.</h1>
+      <p>Treinamento personalizado para hipertrofia, emagrecimento e performance.</p>
+    </main>
+  );
 }
-
-export default index

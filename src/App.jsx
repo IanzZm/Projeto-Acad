@@ -1,12 +1,7 @@
-import Home from './pages/Home'
-import DefaultLayout from './templates/DefaultLayout'
+import { Home } from "./pages/Home";
 
 function App() {
-  return (
-    <DefaultLayout>
-      <Home />
-    </DefaultLayout>
-  )
+  return <Home />;
 }
 
-export default App
+export default App;
