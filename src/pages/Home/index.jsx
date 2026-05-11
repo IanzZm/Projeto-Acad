@@ -6,11 +6,27 @@ export function Home() {
     <>
       <Header />
 
-      <main className={styles.home}>
-        <h1>Transforme seu corpo com treino e estratégia.</h1>
-        <p>
-          Treinamento personalizado para hipertrofia, emagrecimento e performance.
-        </p>
+       <main className={styles.home}>
+        <section className={styles.hero}>
+          <div className={styles.content}>
+            <h1 className={styles.title}>
+              Transforme seu corpo com <span>treino</span> e <span>estratégia</span>.
+            </h1>
+
+            <p className={styles.description}>
+              Treinamento personalizado para hipertrofia, emagrecimento e performance.
+            </p>
+
+            <div className={styles.buttons}>
+              <button className={styles.primaryButton}>Inscreva-se</button>
+              <button className={styles.secondaryButton}>Saiba mais</button>
+            </div>
+          </div>
+
+          <div className={styles.visual}>
+            <div className={styles.shape}></div>
+          </div>
+        </section>
       </main>
     </>
   );
