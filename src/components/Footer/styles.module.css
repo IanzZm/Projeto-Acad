@@ -1,0 +1,81 @@
+.footer {
+  background: var(--color-background-secondary);
+  color: var(--color-text);
+  padding: 48px 80px 24px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1.4fr 1px 0.8fr 1.2fr;
+  gap: 64px;
+  align-items: flex-start;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.brand h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 36px;
+}
+
+.brand h2 span {
+  font-weight: 400;
+}
+
+.brand p {
+  max-width: 460px;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.divider {
+  width: 1px;
+  height: 190px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.links h3,
+.contact h3 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.links nav {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.links a {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.links a:hover {
+  color: var(--color-primary);
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact p {
+  color: var(--color-muted);
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+.bottom {
+  padding-top: 24px;
+  text-align: center;
+}
+
+.bottom p {
+  color: var(--color-muted);
+  font-size: 16px;
+}
