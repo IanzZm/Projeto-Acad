@@ -1,5 +1,6 @@
 import { Header } from "../../components/Header";
 import styles from "./styles.module.css";
+import fotoPersonal from "../../assets/indio.png";
 
 export function Home() {
   return (
@@ -21,11 +22,14 @@ export function Home() {
               <button className={styles.primaryButton}>Inscreva-se</button>
               <button className={styles.secondaryButton}>Saiba mais</button>
             </div>
-          </div>
-
-          <div className={styles.visual}>
-            <div className={styles.shape}></div>
-          </div>
+            <div className={styles.heroImageArea}>
+              <img
+                src={fotoPersonal}
+                alt="Personal trainer"
+                className={styles.heroImage}
+              />
+            </div>             
+            </div>
         </section>
       </main>
     </>
