@@ -1,6 +1,7 @@
 import { Header } from "../../components/Header";
 import styles from "./styles.module.css";
 import fotoPersonal from "../../assets/indio.png";
+import { Footer } from "../../components/Footer";
 
 export function Home() {
   return (
@@ -32,6 +33,8 @@ export function Home() {
             </div>
         </section>
       </main>
+
+      <Footer/>
     </>
   );
 }
