@@ -22,6 +22,8 @@ export function Home() {
               <button className={styles.primaryButton}>Inscreva-se</button>
               <button className={styles.secondaryButton}>Saiba mais</button>
             </div>
+          </div>
+
             <div className={styles.heroImageArea}>
               <img
                 src={fotoPersonal}
@@ -29,7 +31,7 @@ export function Home() {
                 className={styles.heroImage}
               />
             </div>             
-            </div>
+            
         </section>
       </main>
     </>
