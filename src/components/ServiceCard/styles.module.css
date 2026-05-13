@@ -1,0 +1,26 @@
+.cardTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  margin-top: 10px;
+}
+
+.cardContent {
+  background-color:#152A49;
+  padding: 20px;
+  max-width: 500px;
+  height: 160px;
+
+}
+
+.cardImage {
+  max-width: 500px;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+.card {
+  border-radius: 30px;
+  overflow: hidden;
+}
