@@ -27,5 +27,8 @@
     color: var(--color-text);
 }
 
+.servicesSection {
+  scroll-margin-top: 120px;
+}
 
 

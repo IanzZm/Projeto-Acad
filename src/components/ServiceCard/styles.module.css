@@ -23,4 +23,11 @@
 .card {
   border-radius: 30px;
   overflow: hidden;
+  box-shadow: 2px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.22);
 }

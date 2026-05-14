@@ -11,3 +11,9 @@ html, body, #root {
 }
 @import './styles/variables.css';
 @import './styles/global.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+
