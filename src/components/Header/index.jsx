@@ -4,10 +4,10 @@ export function Header() {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
-        <a href="#">Programas</a>
-        <a href="#">Inscreva-se</a>
-        <a href="#">Sobre</a>
-        <a href="#">Home</a>
+        <a href="#programas">Programas</a>
+        <a href="#inscricao">Inscreva-se</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#topo">Home</a>
       </nav>
 
       <button className={styles.loginButton}>Entrar</button>

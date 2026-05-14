@@ -30,7 +30,7 @@ const services = [
 export function ServicesSection() {
     return (
         <main className={styles.services}>
-        <section className={styles.servicesSection}>
+        <section id="programas" className={styles.servicesSection}>
           <h1 className={styles.sectionTitle}>Ajudamos você a cumprir sua <span>meta</span>.</h1>
           <div className={styles.servicesList}>
             {services.map((service) => (
