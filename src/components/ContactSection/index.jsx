@@ -1,0 +1,77 @@
+import styles from "./styles.module.css";
+
+export function ContactSection() {
+  return (
+    <section className={styles.contactSection}>
+      <div className={styles.contactInfo}>
+        <h2>Informação de contato</h2>
+
+        <p className={styles.description}>
+          Entre em contato para tirar dúvidas ou agendar sua avaliação.
+        </p>
+
+        <div className={styles.contactList}>
+          <p>☎ +55 84 9858-8872</p>
+          <p>✉ luistavares.profissional@gmail.com</p>
+          <p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-map-pin-icon lucide-map-pin"
+            >
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>{" "}
+            Natal - RN, Brasil
+          </p>
+        </div>
+      </div>
+
+      <form className={styles.form}>
+        <h2>Agende agora sua avaliação</h2>
+
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label htmlFor="name">Seu nome</label>
+            <input type="text" id="name" placeholder="Lucas Pinheiro Silva" />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="lucaspinheiro23@gmail.com"
+            />
+          </div>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="subject">Assunto</label>
+          <input
+            type="text"
+            id="subject"
+            placeholder="Agendamento avaliação física"
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="message">Mensagem</label>
+          <textarea
+            id="message"
+            placeholder="escreva aqui sua mensagem"
+          ></textarea>
+        </div>
+
+        <button type="submit">enviar</button>
+      </form>
+    </section>
+  );
+}
