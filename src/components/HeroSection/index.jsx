@@ -18,7 +18,7 @@ export function HeroSection() {
 
           <div className={styles.buttons}>
             
-            <Link to="/login" className={styles.primaryButton}>
+            <Link to="/inscricao" className={styles.primaryButton}>
               Inscreva-se
             </Link>
             <a href="#sobre" className={styles.secondaryButton}>
