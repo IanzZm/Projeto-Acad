@@ -9,11 +9,12 @@
   position: relative;
   align-items: center;
   padding: 0 100px 0 100px;
+  padding-top: 88px;
   justify-content: space-between;
   overflow: hidden;
   gap: 40px;
   margin: 12px;
-  scroll-margin-top: 88px;
+  
 
 }
 

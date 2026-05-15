@@ -12,8 +12,11 @@ html {
 
 body {
   font-family: Poppins, sans-serif;
-  padding-top: 88px;
+  
   background: var(--color-background);
+}
+section {
+  scroll-margin-top: 80px;
 }
 
 
