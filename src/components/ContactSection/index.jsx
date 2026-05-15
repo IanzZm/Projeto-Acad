@@ -1,8 +1,7 @@
 import styles from "./styles.module.css";
 
 export function ContactSection() {
-
-   function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
     alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
@@ -46,12 +45,22 @@ export function ContactSection() {
         <div className={styles.row}>
           <div className={styles.field}>
             <label htmlFor="name">Seu nome</label>
-            <input type="text" id="name" placeholder="Lucas Pinheiro Silva" />
+            <input
+              type="text"
+              id="name"
+              placeholder="Lucas Pinheiro Silva"
+              required
+            />
           </div>
 
-          <div className={styles.field} >
+          <div className={styles.field}>
             <label htmlFor="phone">Telefone</label>
-            <input type="tel" id="phone" placeholder="(84) 99999-9999" />
+            <input
+              type="tel"
+              id="phone"
+              placeholder="(84) 99999-9999"
+              required
+            />
           </div>
 
           <div className={styles.field}>
@@ -60,6 +69,7 @@ export function ContactSection() {
               type="email"
               id="email"
               placeholder="lucaspinheiro23@gmail.com"
+              required
             />
           </div>
         </div>
@@ -70,6 +80,7 @@ export function ContactSection() {
             type="text"
             id="subject"
             placeholder="Agendamento avaliação física"
+            required
           />
         </div>
 
@@ -77,7 +88,7 @@ export function ContactSection() {
           <label htmlFor="message">Mensagem</label>
           <textarea
             id="message"
-            placeholder="escreva aqui sua mensagem"
+            placeholder="Escreva aqui sua mensagem (opcional)"
           ></textarea>
         </div>
 
