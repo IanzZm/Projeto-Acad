@@ -3,7 +3,7 @@ import fotoPersonal from "../../assets/indio.png";
 export function HeroSection() {
     return (
         <main className={styles.home}>
-        <section className={styles.hero}>
+        <section className={styles.hero} id="topo">
           <div className={styles.content}>
             <h1 className={styles.title}>
               Transforme seu corpo com <span>treino</span> e <span>estratégia</span>.
