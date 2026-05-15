@@ -86,6 +86,11 @@
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .primaryButton {
@@ -94,15 +99,14 @@
 
 .primaryButton:hover {
   transform: translateY(-1px);
-  background: #D43706;
+  background: #d43706;
 }
 
 .secondaryButton {
-  background: #152A49;
+  background: #152a49;
 }
 
 .secondaryButton:hover {
   transform: translateY(-1px);
-  background: #314B70;
+  background: #314b70;
 }
-
