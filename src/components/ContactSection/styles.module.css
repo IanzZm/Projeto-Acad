@@ -39,6 +39,11 @@
 .contactList p {
   font-size: 17px;
 }
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 .form {
   color: #17233c;
@@ -46,19 +51,19 @@
 
 .form h2 {
   font-size: 26px;
-  margin-bottom: 64px;
+  margin-bottom: 40px;
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  column-gap: 48px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 }
 
 .field label {

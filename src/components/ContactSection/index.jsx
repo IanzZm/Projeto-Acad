@@ -1,6 +1,12 @@
 import styles from "./styles.module.css";
 
 export function ContactSection() {
+
+   function handleSubmit(event) {
+    event.preventDefault();
+
+    alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
+  }
   return (
     <section className={styles.contactSection}>
       <div className={styles.contactInfo}>
@@ -34,13 +40,18 @@ export function ContactSection() {
         </div>
       </div>
 
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <h2>Agende agora sua avaliação</h2>
 
         <div className={styles.row}>
           <div className={styles.field}>
             <label htmlFor="name">Seu nome</label>
             <input type="text" id="name" placeholder="Lucas Pinheiro Silva" />
+          </div>
+
+          <div className={styles.field} >
+            <label htmlFor="phone">Telefone</label>
+            <input type="tel" id="phone" placeholder="(84) 99999-9999" />
           </div>
 
           <div className={styles.field}>
