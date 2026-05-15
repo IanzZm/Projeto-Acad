@@ -1,0 +1,26 @@
+.rateSection h1 {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.rateSection p {
+  text-align: center;
+  font-size: 24px;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+}
+
+.rateSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 20px;
+    background-color: var(--background-color);
+}
+
+.rateSection span {
+    color: var(--color-primary);
+}
