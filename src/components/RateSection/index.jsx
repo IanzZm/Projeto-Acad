@@ -2,11 +2,12 @@ import styles from "./styles.module.css";
 import pessoa1 from "../../assets/pessoa1.png";
 import pessoa2 from "../../assets/pessoa2.png";
 import pessoa3 from "../../assets/pessoa3.png";
+import { ResultCard } from "../ResultCard";
 
 const results = [
   {
     image: pessoa1,
-    text: "“Se você está em dúvida por onde começar, faz a avaliação com o Marcos. Foi essencial pra eu entender meus objetivos e seguir um treino realmente eficaz.”",
+    text: "“Se você está em dúvida por onde começar, faz a avaliação com o . Foi essencial pra eu entender meus objetivos e seguir um treino realmente eficaz.”",
     name: "Natália, 42 anos",
   },
   {
@@ -30,8 +31,14 @@ export function RateSection() {
             <p className={styles.description}>Acompanhamos cada etapa da evolução com base em <span className={styles.highlight}>dados reais</span> e avaliações físicas contínuas.</p>
             </div>
             <div className={styles.cards}>
-                
-            
+              {results.map((item) => (
+              <ResultCard
+                key={item.name}
+                image={item.image}
+                text={item.text}
+                name={item.name}
+                />
+                ))}
             </div>
         </section>
     </main>

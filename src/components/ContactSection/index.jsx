@@ -7,7 +7,19 @@ export function ContactSection() {
     alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
   }
   return (
+
+  
     <section className={styles.contactSection}>
+
+      <div className={styles.contactHeader}>
+        <h1>Pronto para começar?</h1>
+        <p>
+          Preencha seus dados para agendar sua avaliação física e receber um <br></br>
+          direcionamento estratégico para alcançar seus objetivos.
+        </p>
+      </div>
+      
+      <div className={styles.contactWrapper}>
       <div className={styles.contactInfo}>
         <h2>Informação de contato</h2>
 
@@ -94,6 +106,7 @@ export function ContactSection() {
 
         <button type="submit">enviar</button>
       </form>
+      </div> 
     </section>
   );
 }
