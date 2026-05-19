@@ -25,7 +25,7 @@ export function LoginForm() {
     }
 
     if (user.role === "admin") {
-      navigate("/plataforma-professor");
+      navigate("/portal-professor");
     } else {
       navigate("/portal-aluno");
     }
