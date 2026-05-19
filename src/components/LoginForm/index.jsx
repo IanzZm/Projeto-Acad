@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../firebase";
 import styles from "./styles.module.css";
+
 
 const fakeUsers = [
   { email: "professor@email.com", password: "123456", role: "admin" },
@@ -31,6 +34,26 @@ export function LoginForm() {
     }
   }
 
+  async function handleGoogleLogin() {
+
+    try {
+
+      const result = await signInWithPopup(auth, provider);
+
+      console.log(result.user);
+
+      navigate("/portal-aluno");
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Erro ao fazer login com Google");
+
+    }
+
+  }
+
   return (
     <div className={styles.formBox}>
       <h1>Bem-vindo de volta</h1>
@@ -57,6 +80,13 @@ export function LoginForm() {
         </div>
         <button type="submit" className={styles.loginButton}>
           Entrar
+        </button>
+        <button
+        type="button"
+        onClick={handleGoogleLogin}
+        className={styles.googleButton}
+        >
+        Entrar com Google
         </button>
       </form>
       <p className={styles.registerText}>
