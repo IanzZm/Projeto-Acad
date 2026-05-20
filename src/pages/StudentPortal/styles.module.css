@@ -1,0 +1,33 @@
+.portal {
+  min-height: 100vh;
+  background: #f6f7fb;
+  color: #1f2937;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.content {
+  min-width: 0;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}

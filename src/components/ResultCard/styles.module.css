@@ -1,68 +1,27 @@
 .card {
-  width: min(100%, 500px);
-  overflow: hidden;
-  border-radius: 18px;
-  background: #d9d9d9;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
-  transform: translateY(0);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 26px 52px rgba(0, 0, 0, 0.38);
-}
-
-.card:hover .cardImage {
-  transform: scale(1.04);
+  border-radius: 20px;
 }
 
 .cardContent {
-  padding: 34px 28px 40px;
+  padding: 18px 16px 40px;
   text-align: center;
-  background-color: #d9d9d9;
+  max-width: 500px;
+  background-color: #D9D9D9;
+  
+  
 }
 
 .cardImage {
+  border-radius: 20px 20px 0 0;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
+  object-fit: cover;  
   display: block;
-  transform-origin: center top;
-  transition: transform 0.35s ease;
+ 
 }
 
 .cardText {
   font-size: 16px;
-  line-height: 1.55;
   color: var(--color-black);
-  margin: 0 0 28px;
-}
-
-.cardName {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--color-black);
-}
-
-@media (max-width: 560px) {
-  .card {
-    border-radius: 14px;
-  }
-
-  .cardContent {
-    padding: 28px 20px 34px;
-  }
-
-  .cardText {
-    font-size: 15px;
-  }
-
-  .cardName {
-    font-size: 18px;
-  }
+  margin: 20px 0px 25px 0px;
 }

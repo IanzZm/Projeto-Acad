@@ -1,0 +1,90 @@
+.performance {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.performance h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 14px;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metricCard {
+  border-radius: 14px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left-width: 4px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metricCard span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.metricCard strong {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.metricCard small {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.good {
+  border-color: #bbf7d0;
+  border-left-color: #16a34a;
+}
+
+.good small {
+  color: #15803d;
+}
+
+.neutral {
+  border-color: #e5e7eb;
+  border-left-color: #9ca3af;
+}
+
+.neutral small {
+  color: #4b5563;
+}
+
+.warning {
+  border-color: #fde68a;
+  border-left-color: #f59e0b;
+}
+
+.warning small {
+  color: #b45309;
+}
+
+.danger {
+  border-color: #fecaca;
+  border-left-color: #dc2626;
+}
+
+.danger small {
+  color: #b91c1c;
+}
+
+@media (max-width: 700px) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}
