@@ -22,6 +22,7 @@
   flex-direction: column;
   gap: 12px;
   margin-bottom: 28px;
+  
 }
 
 .inputGroup label {
@@ -96,14 +97,15 @@
 }
 
 .googleButton {
+  font-family: 'poppins', sans-serif;
   margin: 20px 0px 0px 0px;
   width: 100%;
   height: 54px;
-  border: #f04b1f solid 2px;
+  border: #f04b1f solid 1.9px;
   border-radius: 9px;
   color: #f14f04;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(255, 87, 40, 0.116);
   transition: 0.2s ease;
