@@ -63,7 +63,7 @@
   line-height: 1.5;
 }
 
-.actionCard button {
+.actionButton {
   width: 100%;
   min-height: 42px;
   border: 1px solid #e5e7eb;
@@ -72,9 +72,14 @@
   color: #111827;
   font-weight: 800;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font: inherit;
 }
 
-.actionCard button:hover {
+.actionButton:hover {
   background: #f9fafb;
 }
 
@@ -88,13 +93,13 @@
   color: #dc2626;
 }
 
-.danger button {
+.danger .actionButton {
   border-color: #fecaca;
   color: #b91c1c;
   background: #ffffff;
 }
 
-.danger button:hover {
+.danger .actionButton:hover {
   background: #fff1f2;
 }
 
