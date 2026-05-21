@@ -1,4 +1,4 @@
-import { LoginForm } from "../../components/LoginForm";
+import { LoginForm } from "./components/LoginForm";
 import loginHero from "../../assets/loginHero.png";
 import styles from "./styles.module.css";
 

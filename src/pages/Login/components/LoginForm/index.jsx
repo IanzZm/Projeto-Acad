@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../firebase";
+import { auth, provider } from "../../../../firebase";
 import styles from "./styles.module.css";
 
 
@@ -10,19 +10,13 @@ const fakeUsers = [
   { email: "aluno@email.com", password: "123456", role: "aluno" },
 ];
 
-export function RegisterForm() {
+export function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   function handleLogin(event) {
     event.preventDefault();
-
-     if (password !== confirmPassword) {
-    alert("As senhas não coincidem");
-    return;
-    }
 
     const user = fakeUsers.find(
       (fakeUser) => fakeUser.email === email && fakeUser.password === password,
@@ -62,19 +56,18 @@ export function RegisterForm() {
 
   return (
     <div className={styles.formBox}>
-      <h1>Cadastre-se aqui</h1>
+      <h1>Bem-vindo de volta</h1>
       <form className={styles.form} onSubmit={handleLogin}>
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
-            placeholder="Email"
+            placeholder="Entrar com Email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-          />  
+          />
         </div>
-
         <div className={styles.inputGroup}>
           <label htmlFor="password">Senha</label>
           <input
@@ -85,31 +78,19 @@ export function RegisterForm() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
-
-        <div className={styles.inputGroup}>
-          <label htmlFor="confirmPassword">Confirmar senha</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            placeholder="********"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-          />
-        </div>
-        
         <button type="submit" className={styles.loginButton}>
-          Cadastrar
+          Entrar
         </button>
         <button
         type="button"
         onClick={handleGoogleLogin}
         className={styles.googleButton}
         >
-        Cadastrar-se com Google
+        Entrar com Google
         </button>
       </form>
       <p className={styles.registerText}>
-        Já possui uma conta? <Link to="/login">Faça login!</Link>
+        Não tem conta? <Link to="/inscricao">Inscreva-se grátis!</Link>
       </p>
     </div>
   );
