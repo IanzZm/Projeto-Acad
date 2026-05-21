@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
-import pessoa1 from "../../assets/pessoa1.png";
-import pessoa2 from "../../assets/pessoa2.png";
-import pessoa3 from "../../assets/pessoa3.png";
+import pessoa1 from "../../../../assets/pessoa1.png";
+import pessoa2 from "../../../../assets/pessoa2.png";
+import pessoa3 from "../../../../assets/pessoa3.png";
 import { ResultCard } from "../ResultCard";
 
 const results = [

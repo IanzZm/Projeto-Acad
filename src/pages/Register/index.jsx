@@ -1,4 +1,4 @@
-import { RegisterForm } from "../../components/RegisterForm";
+import { RegisterForm } from "./components/RegisterForm";
 import loginHero from "../../assets/loginHero.png";
 import styles from "./styles.module.css";
 

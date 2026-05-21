@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import fotoPersonal from "../../assets/indio.png";
+import fotoPersonal from "../../../../assets/indio.png";
 import { Link } from "react-router-dom";
 export function HeroSection() {
   return (

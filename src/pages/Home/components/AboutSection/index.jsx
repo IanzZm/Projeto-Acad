@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import indio2 from "../../assets/indio2.png";
+import indio2 from "../../../../assets/indio2.png";
 
 export function AboutSection() {
     return (

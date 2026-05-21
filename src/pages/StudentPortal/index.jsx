@@ -1,8 +1,8 @@
-import { PageHeader } from "../../components/PageHeader";
-import { PerformanceSection } from "../../components/PerformanceSection";
-import { PortalHeader } from "../../components/PortalHeader";
-import { QuickActionsSection } from "../../components/QuickActionsSections";
-import { StudentSidebar } from "../../components/StudentSidebar";
+import { PageHeader } from "./components/PageHeader";
+import { PerformanceSection } from "./components/PerformanceSection";
+import { PortalHeader } from "./components/PortalHeader";
+import { QuickActionsSection } from "./components/QuickActionsSections";
+import { StudentSidebar } from "./components/StudentSidebar";
 import styles from "./styles.module.css";
 
 
