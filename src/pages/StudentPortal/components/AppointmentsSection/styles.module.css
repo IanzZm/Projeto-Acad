@@ -1,0 +1,274 @@
+.appointments {
+  display: grid;
+  gap: 28px;
+}
+
+.header span {
+  display: block;
+  margin-bottom: 8px;
+  color: #f97316;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.header h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+.section h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.appointmentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.appointmentCard {
+  width: min(100%, 300px);
+  border: 1px solid #e5e7eb;
+  border-left: 5px solid #f97316;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(17, 24, 39, 0.14);
+  padding: 14px 20px 20px;
+}
+
+.month {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.day {
+  display: block;
+  margin-top: 4px;
+  color: #111827;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.appointmentInfo {
+  margin-top: 18px;
+}
+
+.appointmentInfo h4 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.appointmentInfo p {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.appointmentInfo span {
+  color: #f97316;
+  font-size: 12px;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.secondaryButton,
+.textButton {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.secondaryButton {
+  color: #4b5563;
+}
+
+.textButton {
+  color: #f97316;
+}
+
+.scheduler {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+  gap: 40px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(17, 24, 39, 0.12);
+  padding: 40px;
+}
+
+.calendarPanel,
+.detailsPanel {
+  border-radius: 14px;
+  background: #f3f4f6;
+  padding: 18px 24px 26px;
+}
+
+.detailsPanel {
+  display: grid;
+  align-content: start;
+  gap: 28px;
+}
+
+.stepLabel {
+  display: block;
+  margin-bottom: 16px;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.monthSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.monthSwitcher strong {
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.monthSwitcher button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111827;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.monthSwitcher button:hover {
+  border-color: #f97316;
+  color: #f97316;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(38px, 1fr));
+  gap: 8px;
+}
+
+.timesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(58px, 1fr));
+  gap: 10px;
+}
+
+.dayButton,
+.selectedDay,
+.timeButton,
+.selectedTime {
+  min-height: 32px;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111827;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.selectedDay,
+.selectedTime {
+  background: #1f1f1f;
+  color: #ffffff;
+}
+
+.confirmation p {
+  max-width: 320px;
+  margin: 0 0 14px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirmation strong {
+  color: #111827;
+}
+
+.confirmation button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 0 14px;
+}
+
+@media (max-width: 1100px) {
+  .scheduler {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .header h2 {
+    font-size: 30px;
+  }
+
+  .section h3 {
+    font-size: 22px;
+  }
+
+  .appointmentCard {
+    width: 100%;
+  }
+
+  .scheduler {
+    padding: 16px;
+  }
+
+  .calendarPanel,
+  .detailsPanel {
+    padding: 16px;
+  }
+
+  .daysGrid {
+    grid-template-columns: repeat(4, minmax(44px, 1fr));
+  }
+
+  .timesGrid {
+    grid-template-columns: repeat(2, minmax(70px, 1fr));
+  }
+}

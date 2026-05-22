@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
 
 const navItems = [
   {
     label: "Início",
-    active: true,
+    to: "/portal-aluno",
+    end: true,
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 10.5 12 3l9 7.5" />
@@ -15,6 +16,7 @@ const navItems = [
   },
   {
     label: "Agendamentos",
+    to: "/portal-aluno/agendamentos",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M7 3v4" />
@@ -27,6 +29,7 @@ const navItems = [
   },
   {
     label: "Avaliação física",
+    to: "/portal-aluno/avaliacao-fisica",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M4 20V4" />
@@ -44,14 +47,17 @@ export function StudentSidebar() {
     <aside className={styles.sidebar}>
       <nav className={styles.nav} aria-label="Menu do aluno">
         {navItems.map((item) => (
-          <a
+          <NavLink
             key={item.label}
-            href="#"
-            className={item.active ? styles.activeNavItem : styles.navItem}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              isActive ? styles.activeNavItem : styles.navItem
+            }
           >
             {item.icon}
             <span>{item.label}</span>
-          </a>
+          </NavLink>
         ))}
 
         <Link to="/login" className={styles.navItem}>
