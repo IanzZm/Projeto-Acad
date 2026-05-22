@@ -16,6 +16,10 @@ function App() {
         path="/portal-aluno/agendamentos"
         element={<StudentPortal view="appointments" />}
       />
+      <Route
+        path="/portal-aluno/avaliacao-fisica"
+        element={<StudentPortal view="evaluation" />}
+      />
       <Route path="/portal-professor" element={<TeacherPortal />} />
     </Routes>
   );
