@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 120px;
+  padding: 70px;
   margin-left: 115px;
 }
 
@@ -44,12 +44,6 @@
     justify-content: center;
   }
 
-  .formSide {
-    width: 100%;
-    height: 100vh;
-    padding: 40px 20px;
-    align-items: center;
-  }
 
   .imageSide {
     display: none;
