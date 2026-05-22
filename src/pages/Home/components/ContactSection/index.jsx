@@ -1,10 +1,31 @@
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../../../firebase";
 import styles from "./styles.module.css";
 
 export function ContactSection() {
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      await addDoc(collection(db, "messages"), {
+        name: formData.get("name"),
+        phone: formData.get("phone"),
+        email: formData.get("email"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
+        read: false,
+        createdAt: serverTimestamp(),
+      });
+
+      form.reset();
+      alert("Mensagem enviada com sucesso! Em breve entraremos em contato.");
+    } catch (error) {
+      console.error(error);
+      alert("Não foi possível enviar a mensagem. Tente novamente.");
+    }
   }
   return (
 
@@ -60,6 +81,7 @@ export function ContactSection() {
             <input
               type="text"
               id="name"
+              name="name"
               placeholder="Lucas Pinheiro Silva"
               required
             />
@@ -70,6 +92,7 @@ export function ContactSection() {
             <input
               type="tel"
               id="phone"
+              name="phone"
               placeholder="(84) 99999-9999"
               required
             />
@@ -80,6 +103,7 @@ export function ContactSection() {
             <input
               type="email"
               id="email"
+              name="email"
               placeholder="lucaspinheiro23@gmail.com"
               required
             />
@@ -91,6 +115,7 @@ export function ContactSection() {
           <input
             type="text"
             id="subject"
+            name="subject"
             placeholder="Agendamento avaliação física"
             required
           />
@@ -100,6 +125,7 @@ export function ContactSection() {
           <label htmlFor="message">Mensagem</label>
           <textarea
             id="message"
+            name="message"
             placeholder="Escreva aqui sua mensagem (opcional)"
           ></textarea>
         </div>

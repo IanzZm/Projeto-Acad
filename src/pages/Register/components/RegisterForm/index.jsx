@@ -1,69 +1,116 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../../../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, db, provider } from "../../../../firebase";
 import styles from "./styles.module.css";
-
-
-const fakeUsers = [
-  { email: "professor@email.com", password: "123456", role: "admin" },
-  { email: "aluno@email.com", password: "123456", role: "aluno" },
-];
 
 export function RegisterForm() {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function handleLogin(event) {
-    event.preventDefault();
+  function getRegisterErrorMessage(error) {
+    const messages = {
+      "auth/email-already-in-use": "Esse email já está cadastrado. Tente fazer login.",
+      "auth/invalid-email": "Digite um email válido.",
+      "auth/operation-not-allowed": "Ative o login por Email/Senha no Firebase Authentication.",
+      "auth/weak-password": "A senha precisa ter pelo menos 6 caracteres.",
+      "permission-denied": "O Firestore bloqueou a criação do perfil. Verifique as regras do banco.",
+    };
 
-     if (password !== confirmPassword) {
-    alert("As senhas não coincidem");
-    return;
+    return messages[error.code] || "Não foi possível criar a conta.";
+  }
+
+  async function createUserProfile(user, fallbackName = "") {
+    const userRef = doc(db, "users", user.uid);
+    const userSnapshot = await getDoc(userRef);
+
+    if (userSnapshot.exists()) {
+      return userSnapshot.data().role || "aluno";
     }
 
-    const user = fakeUsers.find(
-      (fakeUser) => fakeUser.email === email && fakeUser.password === password,
-    );
+    await setDoc(userRef, {
+      email: user.email,
+      name: user.displayName || fallbackName,
+      role: "aluno",
+      createdAt: serverTimestamp(),
+    });
 
-    if (!user) {
-      alert("Email ou senha inválidos");
+    return "aluno";
+  }
+
+  function redirectByRole(role) {
+    if (role === "admin") {
+      navigate("/portal-professor");
       return;
     }
 
-    if (user.role === "admin") {
-      navigate("/portal-professor");
-    } else {
-      navigate("/portal-aluno");
+    navigate("/portal-aluno");
+  }
+
+  async function handleRegister(event) {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem");
+      return;
+    }
+
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      await updateProfile(result.user, {
+        displayName: name,
+      });
+
+      const role = await createUserProfile(result.user, name);
+
+      redirectByRole(role);
+    } catch (error) {
+      console.error(error);
+      alert(getRegisterErrorMessage(error));
     }
   }
 
   async function handleGoogleLogin() {
-
     try {
-
       const result = await signInWithPopup(auth, provider);
+      const role = await createUserProfile(result.user);
 
-      console.log(result.user);
-
-      navigate("/portal-aluno");
-
+      redirectByRole(role);
     } catch (error) {
-
-      console.log(error);
-
-      alert("Erro ao fazer login com Google");
-
+      console.error(error);
+      alert("Erro ao fazer cadastro com Google");
     }
-
   }
 
   return (
     <div className={styles.formBox}>
       <h1>Cadastre-se aqui</h1>
-      <form className={styles.form} onSubmit={handleLogin}>
+      <form className={styles.form} onSubmit={handleRegister}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="name">Nome</label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Seu nome"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
+        </div>
+
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -72,7 +119,8 @@ export function RegisterForm() {
             placeholder="Email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-          />  
+            required
+          />
         </div>
 
         <div className={styles.inputGroup}>
@@ -83,6 +131,7 @@ export function RegisterForm() {
             placeholder="********"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            required
           />
         </div>
 
@@ -94,18 +143,19 @@ export function RegisterForm() {
             placeholder="********"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
+            required
           />
         </div>
-        
+
         <button type="submit" className={styles.loginButton}>
           Cadastrar
         </button>
         <button
-        type="button"
-        onClick={handleGoogleLogin}
-        className={styles.googleButton}
+          type="button"
+          onClick={handleGoogleLogin}
+          className={styles.googleButton}
         >
-        Cadastrar-se com Google
+          Cadastrar-se com Google
         </button>
       </form>
       <p className={styles.registerText}>

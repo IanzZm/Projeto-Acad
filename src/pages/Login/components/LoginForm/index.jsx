@@ -1,9 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../../../firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, db, provider } from "../../../../firebase";
 import styles from "./styles.module.css";
-
 
 const fakeUsers = [
   { email: "professor@email.com", password: "123456", role: "admin" },
@@ -15,43 +15,66 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleLogin(event) {
-    event.preventDefault();
+  async function getUserRole(user) {
+    const userRef = doc(db, "users", user.uid);
+    const userSnapshot = await getDoc(userRef);
 
-    const user = fakeUsers.find(
-      (fakeUser) => fakeUser.email === email && fakeUser.password === password,
-    );
+    if (!userSnapshot.exists()) {
+      await setDoc(userRef, {
+        email: user.email,
+        name: user.displayName || "",
+        role: "aluno",
+        createdAt: serverTimestamp(),
+      });
 
-    if (!user) {
-      alert("Email ou senha inválidos");
+      return "aluno";
+    }
+
+    return userSnapshot.data().role || "aluno";
+  }
+
+  function redirectByRole(role) {
+    if (role === "admin") {
+      navigate("/portal-professor");
       return;
     }
 
-    if (user.role === "admin") {
-      navigate("/portal-professor");
-    } else {
-      navigate("/portal-aluno");
+    navigate("/portal-aluno");
+  }
+
+  async function handleLogin(event) {
+    event.preventDefault();
+
+    const fakeUser = fakeUsers.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (fakeUser) {
+      redirectByRole(fakeUser.role);
+      return;
+    }
+
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const role = await getUserRole(result.user);
+
+      redirectByRole(role);
+    } catch (error) {
+      console.error(error);
+      alert("Email ou senha inválidos");
     }
   }
 
   async function handleGoogleLogin() {
-
     try {
-
       const result = await signInWithPopup(auth, provider);
+      const role = await getUserRole(result.user);
 
-      console.log(result.user);
-
-      navigate("/portal-aluno");
-
+      redirectByRole(role);
     } catch (error) {
-
-      console.log(error);
-
+      console.error(error);
       alert("Erro ao fazer login com Google");
-
     }
-
   }
 
   return (
@@ -82,11 +105,11 @@ export function LoginForm() {
           Entrar
         </button>
         <button
-        type="button"
-        onClick={handleGoogleLogin}
-        className={styles.googleButton}
+          type="button"
+          onClick={handleGoogleLogin}
+          className={styles.googleButton}
         >
-        Entrar com Google
+          Entrar com Google
         </button>
       </form>
       <p className={styles.registerText}>

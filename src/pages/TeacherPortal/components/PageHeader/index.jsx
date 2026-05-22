@@ -9,7 +9,7 @@ export function PageHeader() {
         <p>Acompanhe suas atividades e pendências.</p>
       </div>
 
-      <p className={styles.welcome}>Bem-vindo de volta, Luís</p>
+      <p className={styles.welcome}>Bem-vindo de volta, Luís 👋</p>
     </div>
   );
 }
