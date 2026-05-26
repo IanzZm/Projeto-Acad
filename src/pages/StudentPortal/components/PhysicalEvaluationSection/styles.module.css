@@ -265,6 +265,84 @@
   --metric-tint: #fef3c7;
 }
 
+.classificationPanel {
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(17, 24, 39, 0.1);
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.classificationIntro {
+  display: grid;
+  gap: 4px;
+}
+
+.classificationIntro span {
+  color: #111827;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.classificationIntro p {
+  margin: 0;
+  color: #4b5563;
+}
+
+.classificationGrid {
+  display: grid;
+  gap: 18px;
+}
+
+.classificationTable {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.classificationTable > strong {
+  background: #e0f2fe;
+  color: #111827;
+  display: block;
+  font-size: 13px;
+  font-weight: 900;
+  padding: 13px 18px;
+  text-transform: uppercase;
+}
+
+.tableScroller {
+  overflow-x: auto;
+}
+
+.classificationTable table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  color: #111827;
+  font-size: 13px;
+}
+
+.classificationTable th,
+.classificationTable td {
+  border-top: 1px solid #e5e7eb;
+  padding: 13px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.classificationTable thead th {
+  background: #f9fafb;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.classificationTable tbody th {
+  color: #374151;
+  font-weight: 800;
+}
+
 @keyframes drawLine {
   to {
     stroke-dashoffset: 0;
@@ -304,14 +382,17 @@
   }
 
   .metricCards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 820px) {
-  .summaryGrid,
-  .metricCards {
+  .summaryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .metricCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .chartPanel {
@@ -341,5 +422,15 @@
 
   .chart svg {
     min-height: 270px;
+  }
+
+  .classificationPanel {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .metricCards {
+    grid-template-columns: 1fr;
   }
 }
