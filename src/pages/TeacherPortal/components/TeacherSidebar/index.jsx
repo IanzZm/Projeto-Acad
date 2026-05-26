@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
 
 const navItems = [
   {
-    label: "Início",
-    active: true,
+    label: "Inicio",
+    to: "/portal-professor",
+    end: true,
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 10.5 12 3l9 7.5" />
@@ -15,6 +16,7 @@ const navItems = [
   },
   {
     label: "Agendamentos",
+    to: "/portal-professor/agendamentos",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M7 3v4" />
@@ -25,9 +27,9 @@ const navItems = [
       </svg>
     ),
   },
-
-   {
+  {
     label: "Alunos",
+    to: "/portal-professor/alunos",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -38,7 +40,8 @@ const navItems = [
     ),
   },
   {
-    label: "Avaliações físicas",
+    label: "Avaliacoes fisicas",
+    to: "/portal-professor/avaliacoes-fisicas",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M4 20V4" />
@@ -54,16 +57,19 @@ const navItems = [
 export function TeacherSidebar() {
   return (
     <aside className={styles.sidebar}>
-      <nav className={styles.nav} aria-label="Menu do Professor">
+      <nav className={styles.nav} aria-label="Menu do professor">
         {navItems.map((item) => (
-          <a
+          <NavLink
             key={item.label}
-            href="#"
-            className={item.active ? styles.activeNavItem : styles.navItem}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              isActive ? styles.activeNavItem : styles.navItem
+            }
           >
             {item.icon}
             <span>{item.label}</span>
-          </a>
+          </NavLink>
         ))}
 
         <Link to="/login" className={styles.navItem}>
