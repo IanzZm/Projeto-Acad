@@ -1,21 +1,27 @@
+//useState é para armazenar os valores dos campos do formulário
 import { useState } from "react";
+//funções do firebase para criar usuário, atualizar perfil, criar perfil no firestore e login com google
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+//funções do banco Firestore:
+//doc é para buscar um documento, getDoc é para pegar os dados de um documento, 
+//setDoc é para criar ou atualizar um documento e serverTimestamp salva data/hora do servidor
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db, provider } from "../../../../firebase";
 import styles from "./styles.module.css";
 
 export function RegisterForm() {
   const navigate = useNavigate();
+  //Quando o campo mudar, pegue o valor digitado e salve dentro de name.
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  //Função para mapear os erros do Firebase para mensagens mais amigáveis
   function getRegisterErrorMessage(error) {
     const messages = {
       "auth/email-already-in-use": "Esse email já está cadastrado. Tente fazer login.",
@@ -28,6 +34,7 @@ export function RegisterForm() {
     return messages[error.code] || "Não foi possível criar a conta.";
   }
 
+  //Função para criar ou atualizar o perfil do usuário no Firestore
   async function createUserProfile(user, fallbackName = "") {
     const userRef = doc(db, "users", user.uid);
     const userSnapshot = await getDoc(userRef);
