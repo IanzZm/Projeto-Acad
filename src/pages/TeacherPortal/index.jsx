@@ -1,3 +1,4 @@
+import { AppointmentsSection } from "./components/AppointmentsSection";
 import { PageHeader } from "./components/PageHeader";
 import { PerformanceSection } from "./components/PerformanceSection";
 import { PortalHeader } from "./components/PortalHeader";
@@ -7,7 +8,9 @@ import styles from "./styles.module.css";
 
 
 
-export function TeacherPortal() {
+export function TeacherPortal({ view = "dashboard" }) {
+  const isAppointmentsView = view === "appointments";
+
   return (
     <main className={styles.portal}>
       <PortalHeader/>
@@ -16,16 +19,20 @@ export function TeacherPortal() {
         <TeacherSidebar/>
 
         <section className={styles.content}>
-          <PageHeader/>
+          {isAppointmentsView ? (
+            <AppointmentsSection />
+          ) : (
+            <>
+              <PageHeader/>
 
-          <div className={styles.dashboard}>
-            <PerformanceSection/>
-            
-          </div>
-          <div className={styles.email}>
-            <EmailSection/>
-
-          </div>
+              <div className={styles.dashboard}>
+                <PerformanceSection/>
+              </div>
+              <div className={styles.email}>
+                <EmailSection/>
+              </div>
+            </>
+          )}
         </section>
       </div>
     </main>
