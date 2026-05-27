@@ -10,6 +10,7 @@ import {
 //doc é para buscar um documento, getDoc é para pegar os dados de um documento, 
 //setDoc é para criar ou atualizar um documento e serverTimestamp salva data/hora do servidor
 import { Link, useNavigate } from "react-router-dom";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db, provider } from "../../../../firebase";
 import styles from "./styles.module.css";
 
@@ -44,6 +45,7 @@ export function RegisterForm() {
     }
 
     await setDoc(userRef, {
+      active: true,
       email: user.email,
       name: user.displayName || fallbackName,
       role: "aluno",
