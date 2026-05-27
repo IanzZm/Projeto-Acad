@@ -25,6 +25,10 @@ function App() {
         path="/portal-professor/agendamentos"
         element={<TeacherPortal view="appointments" />}
       />
+      <Route
+        path="/portal-professor/alunos"
+        element={<TeacherPortal view="students" />}
+      />
     </Routes>
   );
 }
