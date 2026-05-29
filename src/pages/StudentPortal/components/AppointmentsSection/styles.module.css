@@ -85,6 +85,7 @@
 .appointmentInfo span {
   color: #f97316;
   font-size: 12px;
+  font-weight: 800;
 }
 
 .cardActions {
@@ -176,6 +177,12 @@
   color: #f97316;
 }
 
+.monthSwitcher button:disabled {
+  border-color: #e5e7eb;
+  color: #c4c4c4;
+  cursor: default;
+}
+
 .daysGrid {
   display: grid;
   grid-template-columns: repeat(7, minmax(38px, 1fr));
@@ -209,6 +216,39 @@
   color: #ffffff;
 }
 
+.dayButton:disabled,
+.selectedDay:disabled,
+.timeButton:disabled,
+.selectedTime:disabled {
+  border-color: #e5e7eb;
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: default;
+}
+
+.emptyState,
+.feedback {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.emptyState {
+  width: 100%;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 18px;
+}
+
+.feedback {
+  max-width: 320px;
+  margin-bottom: 12px;
+  color: #f97316;
+  font-weight: 700;
+}
+
 .confirmation p {
   max-width: 320px;
   margin: 0 0 14px;
@@ -232,6 +272,11 @@
   font-size: 12px;
   font-weight: 800;
   padding: 0 14px;
+}
+
+.confirmation button:disabled {
+  background: #9ca3af;
+  cursor: default;
 }
 
 @media (max-width: 1100px) {
