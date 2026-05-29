@@ -29,6 +29,20 @@
   gap: 16px;
 }
 
+.emptyPanel {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(17, 24, 39, 0.09);
+  padding: 24px;
+}
+
+.emptyPanel p {
+  margin: 0;
+  color: #4b5563;
+  font-weight: 700;
+}
+
 .summaryCard,
 .metricCard {
   border: 1px solid #e5e7eb;

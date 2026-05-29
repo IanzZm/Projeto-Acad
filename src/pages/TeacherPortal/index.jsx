@@ -4,6 +4,7 @@ import { PerformanceSection } from "./components/PerformanceSection";
 import { PortalHeader } from "./components/PortalHeader";
 import { TeacherSidebar } from "./components/TeacherSidebar";
 import { EmailSection } from "./components/EmailSection";
+import { EvaluationSection } from "./components/EvaluationSection";
 import { StudentsSection } from "./components/StudentsSection";
 import styles from "./styles.module.css";
 
@@ -12,6 +13,7 @@ import styles from "./styles.module.css";
 export function TeacherPortal({ view = "dashboard" }) {
   const isAppointmentsView = view === "appointments";
   const isStudentsView = view === "students";
+  const isEvaluationsView = view === "evaluations";
 
   return (
     <main className={styles.portal}>
@@ -25,6 +27,8 @@ export function TeacherPortal({ view = "dashboard" }) {
             <AppointmentsSection />
           ) : isStudentsView ? (
             <StudentsSection />
+          ) : isEvaluationsView ? (
+            <EvaluationSection />
           ) : (
             <>
               <PageHeader/>

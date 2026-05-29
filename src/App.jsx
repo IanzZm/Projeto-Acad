@@ -29,6 +29,10 @@ function App() {
         path="/portal-professor/alunos"
         element={<TeacherPortal view="students" />}
       />
+      <Route
+        path="/portal-professor/avaliacoes-fisicas"
+        element={<TeacherPortal view="evaluations" />}
+      />
     </Routes>
   );
 }
