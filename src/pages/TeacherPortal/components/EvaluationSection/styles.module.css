@@ -1,0 +1,300 @@
+.evaluations {
+  display: grid;
+  gap: 24px;
+}
+
+.header {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header span {
+  display: block;
+  margin-bottom: 6px;
+  color: #f97316;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.header h2 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.total {
+  color: #111827;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #2563eb;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.summaryCard span,
+.formGrid label span {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.summaryCard strong {
+  color: #111827;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.summaryCard small {
+  color: #111827;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.workspace {
+  display: block;
+}
+
+.formPanel,
+.recordsPanel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panelHeader h3,
+.historyPanel h3 {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.panelHeader p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formGrid label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.fullField {
+  grid-column: 1 / -1;
+}
+
+.formGrid input,
+.formGrid select,
+.formGrid textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  padding: 10px 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.formGrid textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.formGrid input:focus,
+.formGrid select:focus,
+.formGrid textarea:focus {
+  border-color: #fa5e2d;
+  box-shadow: 0 0 0 3px rgba(250, 94, 45, 0.14);
+  outline: none;
+}
+
+.feedback {
+  border-radius: 10px;
+  font-weight: 700;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+}
+
+.success {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.error {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.formActions button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 0 18px;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.formActions button:hover:not(:disabled) {
+  background: #fa5e2d;
+}
+
+.formActions button:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.historyPanel {
+  display: grid;
+  gap: 10px;
+}
+
+.historyList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.historyList li {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.historyList div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.historyList strong {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.historyList span,
+.historyList small,
+.emptyState {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.historyList small {
+  white-space: nowrap;
+}
+
+.emptyState {
+  margin: 0;
+}
+
+@media (max-width: 1120px) {
+  .historyList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .total {
+    white-space: normal;
+  }
+
+  .summaryGrid,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .historyList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .formPanel,
+  .recordsPanel {
+    padding: 16px;
+  }
+
+  .formActions,
+  .formActions button {
+    width: 100%;
+  }
+}
