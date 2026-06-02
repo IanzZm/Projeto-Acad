@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../../../../firebase";
+import { auth, db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 export function PageHeader() {

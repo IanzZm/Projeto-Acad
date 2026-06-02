@@ -11,7 +11,7 @@ import {
 //setDoc é para criar ou atualizar um documento e serverTimestamp salva data/hora do servidor
 import { Link, useNavigate } from "react-router-dom";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
-import { auth, db, provider } from "../../../../firebase";
+import { auth, db, provider } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 export function RegisterForm() {

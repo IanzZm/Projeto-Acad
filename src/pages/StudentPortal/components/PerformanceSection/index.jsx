@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { auth, db } from "../../../../firebase";
+import { auth, db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 const metricCards = [

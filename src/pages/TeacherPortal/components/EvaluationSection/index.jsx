@@ -9,7 +9,7 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
-import { db } from "../../../../firebase";
+import { db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 // Estado inicial do formulario. Cada propriedade representa um campo da avaliacao.

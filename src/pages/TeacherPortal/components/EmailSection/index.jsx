@@ -9,7 +9,7 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../../../firebase";
+import { db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 export function EmailSection() {

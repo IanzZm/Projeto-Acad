@@ -2,7 +2,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
-import { auth, db, provider } from "../../../../firebase";
+import { auth, db, provider } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 const fakeUsers = [
