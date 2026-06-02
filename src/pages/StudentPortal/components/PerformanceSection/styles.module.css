@@ -47,6 +47,12 @@
   font-weight: 700;
 }
 
+.feedback {
+  margin: 0;
+  color: #6b7280;
+  font-weight: 600;
+}
+
 .good {
   border-color: #bbf7d0;
   border-left-color: #16a34a;

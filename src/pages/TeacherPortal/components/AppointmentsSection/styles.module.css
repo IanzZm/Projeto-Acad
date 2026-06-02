@@ -86,6 +86,27 @@
   gap: 24px;
 }
 
+.emptyState,
+.feedback {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.emptyState {
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 18px;
+}
+
+.feedback {
+  color: #f97316;
+  font-weight: 700;
+}
+
 .appointmentCard {
   display: grid;
   gap: 16px;
@@ -244,6 +265,18 @@
   color: #ffffff;
 }
 
+.deleteButton {
+  background: #f3f4f6;
+  color: #374151;
+  outline: 1px solid #d1d5db;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #111827;
+  color: #ffffff;
+  outline-color: #111827;
+}
+
 @media (max-width: 900px) {
   .header {
     flex-direction: column;
@@ -275,6 +308,6 @@
 
   .actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }

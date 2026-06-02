@@ -76,6 +76,18 @@ function sortAppointments(firstAppointment, secondAppointment) {
   return firstDate.localeCompare(secondDate);
 }
 
+function getStatusClass(status) {
+  if (status === "Confirmado") {
+    return styles.confirmedStatus;
+  }
+
+  if (status === "Cancelado") {
+    return styles.canceledStatus;
+  }
+
+  return styles.pendingStatus;
+}
+
 export function AppointmentsSection() {
   const today = useMemo(() => new Date(), []);
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
@@ -281,7 +293,9 @@ export function AppointmentsSection() {
                   <h4>{appointment.title}</h4>
                   <p>{appointment.scheduledTime}</p>
                   <p>{appointment.type}</p>
-                  <span>{appointment.status}</span>
+                  <span className={getStatusClass(appointment.status)}>
+                    {appointment.status}
+                  </span>
                 </div>
 
                 <div className={styles.cardActions}>

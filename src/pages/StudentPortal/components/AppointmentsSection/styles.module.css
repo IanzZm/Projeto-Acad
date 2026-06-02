@@ -83,9 +83,28 @@
 }
 
 .appointmentInfo span {
-  color: #f97316;
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 4px 9px;
   font-size: 12px;
   font-weight: 800;
+}
+
+.pendingStatus {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.confirmedStatus {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.canceledStatus {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .cardActions {

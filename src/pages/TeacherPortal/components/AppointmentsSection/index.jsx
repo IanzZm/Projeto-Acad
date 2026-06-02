@@ -1,98 +1,150 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  deleteAppointment,
+  deleteExpiredAppointments,
+  formatAppointmentDay,
+  formatAppointmentMonth,
+  listFutureAppointments,
+  updateAppointmentStatus,
+} from "../../../../services/appointments";
 import styles from "./styles.module.css";
 
-const initialAppointments = [
-  {
-    id: 1,
-    month: "MARCO",
-    day: 28,
-    student: "Marcia",
-    age: 28,
-    title: "Avaliacao Fisica",
-    time: "18:00",
-    type: "Atendimento presencial",
-    status: "Confirmado",
-  },
-  {
-    id: 2,
-    month: "MARCO",
-    day: 29,
-    student: "Felipe",
-    age: 22,
-    title: "Avaliacao Fisica",
-    time: "15:00",
-    type: "Atendimento presencial",
-    status: "Confirmado",
-  },
-  {
-    id: 3,
-    month: "MARCO",
-    day: 31,
-    student: "Paulo",
-    age: 18,
-    title: "Avaliacao Fisica",
-    time: "18:30",
-    type: "Atendimento presencial",
-    status: "Pendente",
-  },
-  {
-    id: 4,
-    month: "MARCO",
-    day: 28,
-    student: "Caio",
-    age: 32,
-    title: "Avaliacao Fisica",
-    time: "14:00",
-    type: "Atendimento presencial",
-    status: "Pendente",
-  },
-  {
-    id: 5,
-    month: "MARCO",
-    day: 28,
-    student: "Juliana",
-    age: 25,
-    title: "Avaliacao Fisica",
-    time: "19:00",
-    type: "Atendimento presencial",
-    status: "Cancelado",
-  },
-  {
-    id: 6,
-    month: "MARCO",
-    day: 30,
-    student: "Renato",
-    age: 41,
-    title: "Avaliacao Fisica",
-    time: "20:00",
-    type: "Atendimento presencial",
-    status: "Confirmado",
-  },
-];
+const statusPriority = {
+  Pendente: 1,
+  Confirmado: 2,
+  Cancelado: 3,
+};
+
+function sortAppointments(firstAppointment, secondAppointment) {
+  const firstPriority = statusPriority[firstAppointment.status] ?? 4;
+  const secondPriority = statusPriority[secondAppointment.status] ?? 4;
+
+  if (firstPriority !== secondPriority) {
+    return firstPriority - secondPriority;
+  }
+
+  const firstDate = `${firstAppointment.scheduledDate} ${firstAppointment.scheduledTime}`;
+  const secondDate = `${secondAppointment.scheduledDate} ${secondAppointment.scheduledTime}`;
+
+  return firstDate.localeCompare(secondDate);
+}
+
+function getStatusClass(status) {
+  if (status === "Confirmado") {
+    return styles.confirmed;
+  }
+
+  if (status === "Cancelado") {
+    return styles.canceled;
+  }
+
+  return styles.pending;
+}
+
+function getActionMessage(action, appointment) {
+  const appointmentLabel = `${appointment.studentName} em ${appointment.scheduledTime}`;
+
+  if (action === "Confirmado") {
+    return `Deseja confirmar o agendamento de ${appointmentLabel}?`;
+  }
+
+  if (action === "Cancelado") {
+    return `Deseja cancelar o agendamento de ${appointmentLabel}?`;
+  }
+
+  return `Deseja excluir o agendamento de ${appointmentLabel}? Essa acao remove o horario do professor e do aluno.`;
+}
 
 export function AppointmentsSection() {
-  const [appointments, setAppointments] = useState(initialAppointments);
-  const confirmedAppointments = appointments.filter(
-    (appointment) => appointment.status === "Confirmado",
-  ).length;
-  const pendingAppointments = appointments.filter(
-    (appointment) => appointment.status === "Pendente",
-  ).length;
-  const canceledAppointments = appointments.filter(
-    (appointment) => appointment.status === "Cancelado",
-  ).length;
+  const [appointments, setAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [savingAppointmentId, setSavingAppointmentId] = useState("");
+  const [feedback, setFeedback] = useState("");
 
-  function handleStatusChange(appointmentId, status) {
-    setAppointments((currentAppointments) =>
-      currentAppointments.map((appointment) =>
-        appointment.id === appointmentId
-          ? {
-              ...appointment,
-              status,
-            }
-          : appointment,
-      ),
+  useEffect(() => {
+    async function loadAppointments() {
+      try {
+        setIsLoading(true);
+        await deleteExpiredAppointments();
+
+        const futureAppointments = await listFutureAppointments();
+        setAppointments(futureAppointments.sort(sortAppointments));
+        setFeedback("");
+      } catch (error) {
+        console.error("Erro ao carregar agendamentos do professor:", error);
+        setFeedback("Nao foi possivel carregar os agendamentos.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadAppointments();
+  }, []);
+
+  const summary = useMemo(() => {
+    return appointments.reduce(
+      (currentSummary, appointment) => ({
+        confirmed:
+          currentSummary.confirmed +
+          (appointment.status === "Confirmado" ? 1 : 0),
+        pending:
+          currentSummary.pending + (appointment.status === "Pendente" ? 1 : 0),
+        canceled:
+          currentSummary.canceled +
+          (appointment.status === "Cancelado" ? 1 : 0),
+      }),
+      { confirmed: 0, pending: 0, canceled: 0 },
     );
+  }, [appointments]);
+
+  async function handleStatusChange(appointment, status) {
+    if (!window.confirm(getActionMessage(status, appointment))) {
+      return;
+    }
+
+    try {
+      setSavingAppointmentId(appointment.id);
+      await updateAppointmentStatus(appointment.id, status);
+
+      setAppointments((currentAppointments) =>
+        currentAppointments
+          .map((currentAppointment) =>
+            currentAppointment.id === appointment.id
+              ? { ...currentAppointment, status }
+              : currentAppointment,
+          )
+          .sort(sortAppointments),
+      );
+      setFeedback(`Agendamento ${status.toLowerCase()} com sucesso.`);
+    } catch (error) {
+      console.error("Erro ao atualizar agendamento:", error);
+      setFeedback("Nao foi possivel atualizar o agendamento.");
+    } finally {
+      setSavingAppointmentId("");
+    }
+  }
+
+  async function handleDeleteAppointment(appointment) {
+    if (!window.confirm(getActionMessage("Excluir", appointment))) {
+      return;
+    }
+
+    try {
+      setSavingAppointmentId(appointment.id);
+      await deleteAppointment(appointment.id);
+
+      setAppointments((currentAppointments) =>
+        currentAppointments.filter(
+          (currentAppointment) => currentAppointment.id !== appointment.id,
+        ),
+      );
+      setFeedback("Agendamento excluido com sucesso.");
+    } catch (error) {
+      console.error("Erro ao excluir agendamento:", error);
+      setFeedback("Nao foi possivel excluir o agendamento.");
+    } finally {
+      setSavingAppointmentId("");
+    }
   }
 
   return (
@@ -110,83 +162,101 @@ export function AppointmentsSection() {
       <section className={styles.summaryGrid} aria-label="Resumo dos agendamentos">
         <article className={styles.summaryCard}>
           <span>Confirmados</span>
-          <strong>{confirmedAppointments} agendamentos</strong>
+          <strong>{summary.confirmed} agendamentos</strong>
           <small>Horarios aprovados para atendimento</small>
         </article>
         <article className={styles.summaryCard}>
           <span>Pendentes</span>
-          <strong>{pendingAppointments} agendamentos</strong>
+          <strong>{summary.pending} agendamentos</strong>
           <small>Aguardando confirmacao do professor</small>
         </article>
         <article className={styles.summaryCard}>
           <span>Cancelados</span>
-          <strong>{canceledAppointments} agendamentos</strong>
+          <strong>{summary.canceled} agendamentos</strong>
           <small>Horarios que nao serao realizados</small>
         </article>
       </section>
 
-      <section className={styles.cardsGrid} aria-label="Lista de agendamentos">
-        {appointments.map((appointment) => (
-          <article
-            key={appointment.id}
-            className={`${styles.appointmentCard} ${
-              appointment.status === "Cancelado" ? styles.canceledCard : ""
-            }`}
-          >
-            <div className={styles.cardTop}>
-              <div className={styles.dateBlock}>
-                <span className={styles.month}>{appointment.month}</span>
-                <strong className={styles.day}>{appointment.day}</strong>
-              </div>
+      {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
 
-              <span
-                className={`${styles.statusBadge} ${
-                  appointment.status === "Confirmado"
-                    ? styles.confirmed
-                    : appointment.status === "Cancelado"
-                      ? styles.canceled
-                      : styles.pending
+      <section className={styles.cardsGrid} aria-label="Lista de agendamentos">
+        {isLoading ? (
+          <p className={styles.emptyState}>Carregando agendamentos...</p>
+        ) : appointments.length === 0 ? (
+          <p className={styles.emptyState}>Nenhum agendamento futuro encontrado.</p>
+        ) : (
+          appointments.map((appointment) => {
+            const isSaving = savingAppointmentId === appointment.id;
+
+            return (
+              <article
+                key={appointment.id}
+                className={`${styles.appointmentCard} ${
+                  appointment.status === "Cancelado" ? styles.canceledCard : ""
                 }`}
               >
-                {appointment.status}
-              </span>
-            </div>
+                <div className={styles.cardTop}>
+                  <div className={styles.dateBlock}>
+                    <span className={styles.month}>
+                      {formatAppointmentMonth(appointment.scheduledDate)}
+                    </span>
+                    <strong className={styles.day}>
+                      {formatAppointmentDay(appointment.scheduledDate)}
+                    </strong>
+                  </div>
 
-            <div className={styles.appointmentInfo}>
-              <h3>{appointment.title}</h3>
+                  <span
+                    className={`${styles.statusBadge} ${getStatusClass(
+                      appointment.status,
+                    )}`}
+                  >
+                    {appointment.status}
+                  </span>
+                </div>
 
-              <div className={styles.meta}>
-                <span>{appointment.time}</span>
-                <span>{appointment.type}</span>
-              </div>
-            </div>
+                <div className={styles.appointmentInfo}>
+                  <h3>{appointment.title}</h3>
 
-            <div className={styles.cardFooter}>
-              <strong>
-                {appointment.student}, {appointment.age} anos
-              </strong>
+                  <div className={styles.meta}>
+                    <span>{appointment.scheduledTime}</span>
+                    <span>{appointment.type}</span>
+                  </div>
+                </div>
 
-              <div className={styles.actions}>
-                <button
-                  type="button"
-                  className={styles.confirmButton}
-                  onClick={() => handleStatusChange(appointment.id, "Confirmado")}
-                  disabled={appointment.status === "Confirmado"}
-                >
-                  Confirmar
-                </button>
-                <button
-                  type="button"
-                  className={styles.cancelButton}
-                  onClick={() => handleStatusChange(appointment.id, "Cancelado")}
-                  disabled={appointment.status === "Cancelado"}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </article>
-        ))}
+                <div className={styles.cardFooter}>
+                  <strong>{appointment.studentName}</strong>
+
+                  <div className={styles.actions}>
+                    <button
+                      type="button"
+                      className={styles.confirmButton}
+                      onClick={() => handleStatusChange(appointment, "Confirmado")}
+                      disabled={isSaving || appointment.status === "Confirmado"}
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.cancelButton}
+                      onClick={() => handleStatusChange(appointment, "Cancelado")}
+                      disabled={isSaving || appointment.status === "Cancelado"}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.deleteButton}
+                      onClick={() => handleDeleteAppointment(appointment)}
+                      disabled={isSaving}
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        )}
       </section>
     </div>
   );

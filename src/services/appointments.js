@@ -151,3 +151,7 @@ export async function updateAppointmentStatus(appointmentId, status) {
     updatedAt: serverTimestamp(),
   });
 }
+
+export async function deleteAppointment(appointmentId) {
+  await deleteDoc(doc(db, APPOINTMENTS_COLLECTION, appointmentId));
+}

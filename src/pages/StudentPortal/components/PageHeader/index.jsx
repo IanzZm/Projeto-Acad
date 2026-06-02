@@ -5,25 +5,32 @@ import { auth, db } from "../../../../firebase";
 import styles from "./styles.module.css";
 
 export function PageHeader() {
-  const [studentName, setStudentName] = useState("");
+  const [studentProfile, setStudentProfile] = useState({
+    name: "",
+    email: "",
+  });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        setStudentName("");
+        setStudentProfile({ name: "", email: "" });
         return;
       }
 
       try {
         const userSnapshot = await getDoc(doc(db, "users", user.uid));
-        const profileName = userSnapshot.exists()
-          ? userSnapshot.data().name
-          : "";
+        const profile = userSnapshot.exists() ? userSnapshot.data() : {};
 
-        setStudentName(profileName || user.displayName || user.email || "");
+        setStudentProfile({
+          name: profile.name || user.displayName || user.email || "",
+          email: profile.email || user.email || "",
+        });
       } catch (error) {
         console.error("Erro ao buscar perfil do aluno:", error);
-        setStudentName(user.displayName || user.email || "");
+        setStudentProfile({
+          name: user.displayName || user.email || "",
+          email: user.email || "",
+        });
       }
     });
 
@@ -38,9 +45,12 @@ export function PageHeader() {
         <p>Acompanhe seus indicadores, avaliacoes e proximos passos.</p>
       </div>
 
-      <p className={styles.welcome}>
-        Bem-vindo de volta{studentName ? `, ${studentName}` : ""}
-      </p>
+      <div className={styles.profileSummary}>
+        <p className={styles.welcome}>
+          Bem-vindo de volta{studentProfile.name ? `, ${studentProfile.name}` : ""}
+        </p>
+        {studentProfile.email ? <small>{studentProfile.email}</small> : null}
+      </div>
     </div>
   );
 }
