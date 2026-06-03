@@ -4,8 +4,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 
@@ -92,6 +94,20 @@ export async function listFutureAppointments() {
 
   // Mantive o filtro no front por enquanto para evitar precisar criar indice composto
   // no Firestore nesta fase inicial do projeto.
+  return snapshot.docs
+    .map(normalizeAppointment)
+    .filter((appointment) => appointment.scheduledDate >= todayIsoDate)
+    .sort(sortByDateAndTime);
+}
+
+export async function listStudentFutureAppointments(studentId) {
+  const todayIsoDate = getTodayIsoDate();
+  const appointmentsQuery = query(
+    getAppointmentsCollection(),
+    where("studentId", "==", studentId),
+  );
+  const snapshot = await getDocs(appointmentsQuery);
+
   return snapshot.docs
     .map(normalizeAppointment)
     .filter((appointment) => appointment.scheduledDate >= todayIsoDate)
