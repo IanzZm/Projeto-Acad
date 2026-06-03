@@ -20,6 +20,10 @@ export function AppRoutes() {
         path="/portal-aluno/avaliacao-fisica"
         element={<StudentPortal view="evaluation" />}
       />
+      <Route
+        path="/portal-aluno/perfil"
+        element={<StudentPortal view="profile" />}
+      />
       <Route path="/portal-professor" element={<TeacherPortal />} />
       <Route
         path="/portal-professor/agendamentos"
