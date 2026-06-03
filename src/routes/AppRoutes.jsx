@@ -45,6 +45,11 @@ export function AppRoutes() {
         }
       />
       <Route
+        path="/portal-aluno/perfil"
+        element={<StudentPortal view="profile" />}
+      />
+      <Route path="/portal-professor" element={<TeacherPortal />} />
+      <Route
         path="/portal-professor/agendamentos"
         element={
           <ProtectedRoute allowedRoles={["admin", "adm", "professor"]}>
