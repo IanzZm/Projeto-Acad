@@ -1,50 +1,131 @@
 .header {
-  width: 100%;
-  height: 100px;
-  padding: 0 60px;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 72px;
+  padding: 10px 14px 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--color-background);
+  gap: 20px;
+  background: rgba(6, 20, 38, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  backdrop-filter: blur(18px);
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brandMark {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 13px;
+  letter-spacing: 0;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 60px;
-}
-
-.nav a:hover {
-  color: var(--color-primary);
-  transition: all 0.5s ease;
+  gap: 24px;
 }
 
 .nav a {
   color: var(--color-text);
   text-decoration: none;
-  font-size: 24px;
+  font-size: 14px;
   font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--color-primary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loginButton,
+.ctaButton {
+  border-radius: 999px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: Poppins, sans-serif;
+  text-decoration: none;
+  font-size: 14px;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
 }
 
 .loginButton {
   background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-text);
-  border-radius: 5px;
-  padding: 10px 26px;
-  cursor: pointer;
-  font-weight: 500;
-  font-family: poppins, sans-serif;
-  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ctaButton {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: 1px solid var(--color-primary);
+}
+
+.loginButton:hover,
+.ctaButton:hover {
+  transform: translateY(-1px);
 }
 
 .loginButton:hover {
-  background: var(--color-primary);
-  color: var(--color-background);
-  border: 1px solid var(--color-primary);
-  transition: all 0.5s ease;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.ctaButton:hover {
+  background: var(--color-primary-hover);
+}
+
+@media (max-width: 860px) {
+  .header {
+    width: calc(100% - 20px);
+    border-radius: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding: 4px 0;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .brand span:last-child {
+    display: none;
+  }
+
+  .loginButton {
+    display: none;
+  }
 }

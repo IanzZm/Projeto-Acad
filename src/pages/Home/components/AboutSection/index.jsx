@@ -1,26 +1,47 @@
-import styles from "./styles.module.css";
 import indio2 from "../../../../assets/indio2.png";
+import styles from "./styles.module.css";
+
+const methodItems = [
+  "Avaliação inicial com medidas e histórico",
+  "Plano de treino compatível com sua rotina",
+  "Ajustes de carga, frequência e execução",
+  "Acompanhamento para manter evolução real",
+];
 
 export function AboutSection() {
-    return (
-        <main className={styles.about}>
-        <section id="sobre" className={styles.aboutSection}>
-            <div className={styles.imageArea}>
-                <img
-                 src={indio2}
-                 alt="Personal Indio"
-                 className={styles.image}/>
+  return (
+    <section id="sobre" className={styles.aboutSection}>
+      <div className={styles.imageArea}>
+        <img src={indio2} alt="Luis Tavares" className={styles.image} />
+        <div className={styles.coachCard}>
+          <span>Coach</span>
+          <strong>Luis Guilherme Tavares</strong>
+          <p>Educação Física - UNINASSAU</p>
+        </div>
+      </div>
+
+      <div className={styles.content}>
+        <span className={styles.eyebrow}>Sobre o profissional</span>
+        <h2>Guiado por experiência prática, dados e presença no processo.</h2>
+        <p>
+          Luis é estudante de Educação Física pela UNINASSAU e atua com foco em
+          treinos personalizados, ajudando alunos a evoluírem de forma
+          consistente e segura.
+        </p>
+        <p>
+          O trabalho combina disciplina, acompanhamento próximo e adaptação
+          individual, respeitando objetivos, rotina e limitações de cada aluno.
+        </p>
+
+        <div className={styles.methodList}>
+          {methodItems.map((item) => (
+            <div key={item} className={styles.methodItem}>
+              <span>+</span>
+              <p>{item}</p>
             </div>
-            <div className={styles.content}>
-            <h2 className={styles.sectionTitle}>Conheça seu profissional</h2>
-            <h1 className={styles.sectionSubtitle}>Luis Guilherme Tavares</h1>
-            <p className={styles.description}>
-                Luis é estudante de Educação Física pela UNINASSAU e atua com foco em treinos personalizados, ajudando alunos a evoluírem de forma consistente e segura. Mesmo em fase de formação, já aplica na prática os princípios mais atuais do treinamento físico, sempre buscando entregar resultados reais.
-            </p>
-            <p className={styles.description}>Seu trabalho é baseado em disciplina, acompanhamento próximo e adaptação individual, entendendo que cada pessoa possui objetivos, rotina e limitações diferentes.</p>
-            <p className={styles.description}>Seja para emagrecimento, ganho de massa muscular ou melhora da performance, Luis desenvolve estratégias práticas e eficientes para que seus alunos evoluam com constância e qualidade.</p>
-            </div>
-        </section>
-        </main>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

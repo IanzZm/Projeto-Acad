@@ -27,75 +27,50 @@ export function ContactSection() {
       alert("Não foi possível enviar a mensagem. Tente novamente.");
     }
   }
+
   return (
-
-  
-    <section className={styles.contactSection}>
-
-      <div className={styles.contactHeader}>
-        <h1>Pronto para começar?</h1>
-        <p>
-          Preencha seus dados para agendar sua avaliação física e receber um <br></br>
-          direcionamento estratégico para alcançar seus objetivos.
-        </p>
-      </div>
-      
+    <section id="contato" className={styles.contactSection}>
       <div className={styles.contactWrapper}>
-      <div className={styles.contactInfo}>
-        <h2>Informação de contato</h2>
-
-        <p className={styles.description}>
-          Entre em contato para tirar dúvidas ou agendar sua avaliação.
-        </p>
-
-        <div className={styles.contactList}>
-          <p>☎ +55 84 9858-8872</p>
-          <p>✉ luistavares.profissional@gmail.com</p>
+        <div className={styles.contactInfo}>
+          <span className={styles.eyebrow}>Contato</span>
+          <h2>Pronto para começar seu plano?</h2>
           <p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-map-pin-icon lucide-map-pin"
-            >
-              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>{" "}
-            Natal - RN, Brasil
+            Envie seus dados para agendar uma avaliação física e receber um
+            direcionamento estratégico para seu objetivo.
           </p>
-        </div>
-      </div>
 
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <h2>Agende agora sua avaliação</h2>
-
-        <div className={styles.row}>
-          <div className={styles.field}>
-            <label htmlFor="name">Seu nome</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Lucas Pinheiro Silva"
-              required
-            />
+          <div className={styles.contactList}>
+            <a href="tel:+558498588872">+55 84 9858-8872</a>
+            <a href="mailto:luistavares.profissional@gmail.com">
+              luistavares.profissional@gmail.com
+            </a>
+            <span>Natal - RN, Brasil</span>
           </div>
+        </div>
 
-          <div className={styles.field}>
-            <label htmlFor="phone">Telefone</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="(84) 99999-9999"
-              required
-            />
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.row}>
+            <div className={styles.field}>
+              <label htmlFor="name">Nome</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Seu nome completo"
+                required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="phone">Telefone</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="(84) 99999-9999"
+                required
+              />
+            </div>
           </div>
 
           <div className={styles.field}>
@@ -104,35 +79,34 @@ export function ContactSection() {
               type="email"
               id="email"
               name="email"
-              placeholder="lucaspinheiro23@gmail.com"
+              placeholder="seuemail@exemplo.com"
               required
             />
           </div>
-        </div>
 
-        <div className={styles.field}>
-          <label htmlFor="subject">Assunto</label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            placeholder="Agendamento avaliação física"
-            required
-          />
-        </div>
+          <div className={styles.field}>
+            <label htmlFor="subject">Objetivo</label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Hipertrofia, emagrecimento, performance..."
+              required
+            />
+          </div>
 
-        <div className={styles.field}>
-          <label htmlFor="message">Mensagem</label>
-          <textarea
-            id="message"
-            name="message"
-            placeholder="Escreva aqui sua mensagem (opcional)"
-          ></textarea>
-        </div>
+          <div className={styles.field}>
+            <label htmlFor="message">Mensagem</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Conte rapidamente sua rotina atual."
+            ></textarea>
+          </div>
 
-        <button type="submit">enviar</button>
-      </form>
-      </div> 
+          <button type="submit">Enviar mensagem</button>
+        </form>
+      </div>
     </section>
   );
 }
