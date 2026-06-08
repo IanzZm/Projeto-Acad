@@ -5,7 +5,6 @@ import { auth, db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
 // Define quais metricas podem aparecer para o aluno.
-// Os IDs precisam ser iguais aos nomes salvos pelo professor em evaluation.metrics.
 const metricDefinitions = [
   {
     id: "bodyFat",
@@ -82,7 +81,6 @@ const metricDefinitions = [
 ];
 
 // Tabelas fixas de referencia para os testes de flexoes e abdominais.
-// Elas continuam fixas porque sao tabelas de classificacao, nao dados do aluno.
 const fitnessClassifications = [
   {
     id: "pushUps",
@@ -176,7 +174,7 @@ function formatShortDate(dateValue) {
     return "";
   }
 
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat("pt-BR", { // <-- CORRIGIDO (com ponto)
     month: "short",
     year: "2-digit",
   }).format(new Date(`${dateValue}T00:00:00`));
@@ -240,12 +238,10 @@ function getChartPoints(history) {
 function buildMetrics(evaluations) {
   return metricDefinitions
     .map((definition) => {
-      // Para cada metrica definida, cria um historico usando todas as avaliacoes do aluno.
       const history = evaluations
         .map((evaluation) => {
           const value = evaluation.metrics?.[definition.id];
 
-          // Se aquela metrica nao foi preenchida em uma avaliacao, ela nao entra no grafico.
           if (typeof value !== "number") {
             return null;
           }
@@ -257,12 +253,10 @@ function buildMetrics(evaluations) {
         })
         .filter(Boolean);
 
-      // Se nenhuma avaliacao tem essa metrica, o card dessa metrica nao aparece.
       if (history.length === 0) {
         return null;
       }
 
-      // O valor principal do card e sempre o valor mais recente.
       const latestValue = history[history.length - 1].value;
 
       return {
@@ -311,29 +305,51 @@ function ClassificationTable({ classification, table }) {
   );
 }
 
-export function PhysicalEvaluationSection() {
-  // Avaliacoes fisicas reais do aluno logado.
+// COMPONENTE PRINCIPAL ATUALIZADO
+export function PhysicalEvaluationSection({ studentId }) {
   const [evaluations, setEvaluations] = useState([]);
-
-  // Controla a mensagem de carregamento inicial.
   const [isLoading, setIsLoading] = useState(true);
-
-  // Guarda mensagens de erro ou aviso, como usuario deslogado.
   const [feedback, setFeedback] = useState("");
-
-  // Guarda qual metrica esta selecionada no grafico.
   const [selectedMetricId, setSelectedMetricId] = useState("");
-
-  // Guarda qual tabela de classificacao esta selecionada.
   const [selectedClassificationId, setSelectedClassificationId] = useState(
     fitnessClassifications[0].id,
   );
 
   useEffect(() => {
-    // Observa o usuario autenticado no Firebase.
+    // Regra para quando o professor passa o ID do aluno
+    if (studentId) {
+      async function loadStudentForProfessor() {
+        try {
+          const evaluationsQuery = query(
+            collection(db, "physicalEvaluations"),
+            where("studentId", "==", studentId),
+          );
+          const evaluationsSnapshot = await getDocs(evaluationsQuery);
+
+          const studentEvaluations = evaluationsSnapshot.docs
+            .map((evaluationDoc) => ({
+              id: evaluationDoc.id,
+              ...evaluationDoc.data(),
+            }))
+            .sort((first, second) => getEvaluationTime(first) - getEvaluationTime(second));
+
+          setEvaluations(studentEvaluations);
+          setFeedback("");
+        } catch (error) {
+          console.error(error);
+          setFeedback("Nao foi possivel carregar as avaliacoes deste aluno.");
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      
+      loadStudentForProfessor();
+      return; 
+    }
+
+    // Regra original para quando o proprio aluno acessa seu painel
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        // Sem usuario logado, nao existe UID para filtrar as avaliacoes.
         setEvaluations([]);
         setFeedback("Entre com sua conta para visualizar suas avaliacoes.");
         setIsLoading(false);
@@ -341,15 +357,12 @@ export function PhysicalEvaluationSection() {
       }
 
       try {
-        // Busca somente avaliacoes em que o studentId e igual ao UID do aluno logado.
-        // Esse studentId foi salvo pelo professor quando cadastrou a avaliacao.
         const evaluationsQuery = query(
           collection(db, "physicalEvaluations"),
           where("studentId", "==", user.uid),
         );
         const evaluationsSnapshot = await getDocs(evaluationsQuery);
 
-        // Converte os documentos do Firestore em objetos comuns e ordena por data.
         const studentEvaluations = evaluationsSnapshot.docs
           .map((evaluationDoc) => ({
             id: evaluationDoc.id,
@@ -362,7 +375,6 @@ export function PhysicalEvaluationSection() {
         setEvaluations(studentEvaluations);
         setFeedback("");
       } catch (error) {
-        // Se o Firebase falhar, a tela mostra uma mensagem amigavel.
         console.error(error);
         setFeedback("Nao foi possivel carregar suas avaliacoes fisicas.");
       } finally {
@@ -371,32 +383,26 @@ export function PhysicalEvaluationSection() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [studentId]);
 
-  // Cria os cards e historicos do grafico com base nas avaliacoes carregadas.
   const metrics = useMemo(() => buildMetrics(evaluations), [evaluations]);
 
-  // Pega a metrica selecionada; se ainda nao houver selecao, usa a primeira disponivel.
   const selectedMetric =
     metrics.find((metric) => metric.id === selectedMetricId) ?? metrics[0];
 
-  // Pega a tabela de classificacao selecionada.
   const selectedClassification =
     fitnessClassifications.find(
       (classification) => classification.id === selectedClassificationId,
     ) ?? fitnessClassifications[0];
 
-  // Como as avaliacoes foram ordenadas por data, a ultima do array e a mais recente.
   const latestEvaluation = evaluations[evaluations.length - 1];
 
   useEffect(() => {
-    // Quando as metricas chegam do Firebase, seleciona automaticamente a primeira.
     if (!selectedMetricId && metrics.length > 0) {
       setSelectedMetricId(metrics[0].id);
     }
   }, [metrics, selectedMetricId]);
 
-  // Prepara os pontos e caminhos SVG do grafico.
   const chartPoints = selectedMetric ? getChartPoints(selectedMetric.history) : [];
   const linePath = chartPoints
     .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
@@ -410,17 +416,15 @@ export function PhysicalEvaluationSection() {
 
   return (
     <div className={styles.evaluation}>
-      {/* Cabecalho da pagina de avaliacao fisica do aluno. */}
       <header className={styles.header}>
-        <span>Painel do aluno</span>
+        <span>{studentId ? "Painel do professor" : "Painel do aluno"}</span>
         <h2>Avaliacao fisica</h2>
         <p>Acompanhe a evolucao das metricas cadastradas pelo professor.</p>
       </header>
 
-      {/* Estados principais: carregando, erro/aviso, sem dados ou conteudo real. */}
       {isLoading ? (
         <section className={styles.emptyPanel}>
-          <p>Carregando suas avaliacoes...</p>
+          <p>Carregando avaliacoes...</p>
         </section>
       ) : feedback ? (
         <section className={styles.emptyPanel}>
@@ -428,11 +432,10 @@ export function PhysicalEvaluationSection() {
         </section>
       ) : evaluations.length === 0 ? (
         <section className={styles.emptyPanel}>
-          <p>Nenhuma avaliacao fisica foi cadastrada para o seu perfil.</p>
+          <p>Nenhuma avaliacao fisica encontrada.</p>
         </section>
       ) : (
         <>
-          {/* Resumo geral baseado nas avaliacoes reais do aluno. */}
           <div className={styles.summaryGrid}>
             <article className={styles.summaryCard}>
               <span>Ultima avaliacao</span>
@@ -442,11 +445,10 @@ export function PhysicalEvaluationSection() {
             <article className={styles.summaryCard}>
               <span>Total de avaliacoes</span>
               <strong>{evaluations.length} avaliacoes</strong>
-              <small>Historico disponivel no seu perfil</small>
+              <small>Historico disponivel no perfil</small>
             </article>
           </div>
 
-          {/* Grafico de evolucao aparece somente quando existe metrica disponivel. */}
           {selectedMetric && (
             <section className={styles.section} aria-labelledby="metrics-history">
               <div className={styles.sectionHeader}>
@@ -455,7 +457,6 @@ export function PhysicalEvaluationSection() {
                   <p>Selecione um indicador para comparar suas avaliacoes.</p>
                 </div>
 
-                {/* Botoes para alternar a metrica exibida no grafico. */}
                 <div className={styles.metricPicker} aria-label="Metrica do grafico">
                   {metrics.map((metric) => (
                     <button
@@ -478,7 +479,6 @@ export function PhysicalEvaluationSection() {
               <article
                 className={`${styles.chartPanel} ${styles[selectedMetric.tone]}`}
               >
-                {/* Resumo da metrica selecionada. */}
                 <div className={styles.metricSummary}>
                   <span>{selectedMetric.label}</span>
                   <strong>{selectedMetric.value}</strong>
@@ -486,7 +486,6 @@ export function PhysicalEvaluationSection() {
                   <p>{selectedMetric.range}</p>
                 </div>
 
-                {/* Grafico SVG desenhado com os pontos calculados a partir do historico. */}
                 <div className={styles.chart}>
                   <svg
                     key={selectedMetric.id}
@@ -498,7 +497,7 @@ export function PhysicalEvaluationSection() {
                       Historico de {selectedMetric.label.toLowerCase()}
                     </title>
                     <desc id="chart-description">
-                      Historico das avaliacoes cadastradas para este aluno.
+                      Historico das avaliacoes cadastradas para este perfil.
                     </desc>
 
                     {[0, 1, 2].map((line) => {
@@ -544,7 +543,6 @@ export function PhysicalEvaluationSection() {
             </section>
           )}
 
-          {/* Cards com o ultimo valor de cada metrica cadastrada pelo professor. */}
           <div className={styles.metricCards}>
             {metrics.map((metric) => (
               <article
@@ -560,7 +558,6 @@ export function PhysicalEvaluationSection() {
         </>
       )}
 
-      {/* Tabelas de referencia dos testes fisicos. */}
       <section
         className={styles.section}
         aria-labelledby="fitness-classifications"
