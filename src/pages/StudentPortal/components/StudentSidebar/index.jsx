@@ -1,6 +1,4 @@
-import { signOut } from "firebase/auth";
-import { NavLink, useNavigate } from "react-router-dom";
-import { auth } from "../../../../config/firebase";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
 
 const navItems = [
@@ -55,13 +53,6 @@ const navItems = [
 ];
 
 export function StudentSidebar() {
-  const navigate = useNavigate();
-
-  async function handleLogout() {
-    await signOut(auth);
-    navigate("/login");
-  }
-
   return (
     <aside className={styles.sidebar}>
       <nav className={styles.nav} aria-label="Menu do aluno">
@@ -79,7 +70,7 @@ export function StudentSidebar() {
           </NavLink>
         ))}
 
-        <button type="button" onClick={handleLogout} className={styles.navItem}>
+        <Link to="/login" className={styles.navItem}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M14 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-3" />
             <path d="M9 12h12" />
@@ -87,7 +78,7 @@ export function StudentSidebar() {
           </svg>
 
           <span>Sair</span>
-        </button>
+        </Link>
       </nav>
     </aside>
   );
