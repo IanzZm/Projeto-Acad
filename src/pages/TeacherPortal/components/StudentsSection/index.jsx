@@ -3,10 +3,17 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
+// IMPORTANTE: Importe o seu componente de avaliação física aqui!
+// Ajuste o caminho ("./caminho-do-arquivo") conforme a sua estrutura de pastas
+import { PhysicalEvaluationSection } from "../../../StudentPortal/components/PhysicalEvaluationSection";
+
 export function StudentsSection() {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  
+  // NOVO ESTADO: Controla qual aluno foi clicado. Começa nulo (nenhum).
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
 
   useEffect(() => {
     async function loadStudents() {
@@ -54,6 +61,29 @@ export function StudentsSection() {
     }).length;
   }, [students]);
 
+  // NOVA LÓGICA: Se o professor clicou em um aluno, renderiza a tela de avaliação dele.
+  if (selectedStudentId) {
+    return (
+      <div className={styles.students}>
+        <button 
+          type="button"
+          onClick={() => setSelectedStudentId(null)}
+          className={styles.backButton}
+          aria-label="Voltar para a lista de alunos"
+        >
+          {/* Ícone de seta limpo e moderno */}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Voltar para a lista
+        </button>
+
+        <PhysicalEvaluationSection studentId={selectedStudentId} />
+      </div>
+    );
+  }
+
+  // SE NÃO TEM ALUNO SELECIONADO: Mostra a sua lista normal
   return (
     <div className={styles.students}>
       <header className={styles.header}>
@@ -89,7 +119,13 @@ export function StudentsSection() {
         ) : (
           <ul className={styles.studentsList}>
             {students.map((student) => (
-              <li key={student.id} className={styles.studentItem}>
+              <li 
+                key={student.id} 
+                className={styles.studentItem}
+                // ADICIONADO AQUI: Quando clicar na 'li', salva o ID desse aluno no estado
+                onClick={() => setSelectedStudentId(student.id)}
+                style={{ cursor: "pointer" }} // Mostra a mãozinha do mouse pra indicar que é clicável
+              >
                 <div className={styles.avatar} aria-hidden="true">
                   {(student.name || student.email || "A").charAt(0).toUpperCase()}
                 </div>
