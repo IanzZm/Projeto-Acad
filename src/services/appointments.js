@@ -157,6 +157,20 @@ export async function updateAppointmentStatus(appointmentId, status) {
   });
 }
 
+export async function updateAppointmentSchedule(
+  appointmentId,
+  { scheduledDate, scheduledTime },
+) {
+  const appointmentRef = doc(db, APPOINTMENTS_COLLECTION, appointmentId);
+
+  await updateDoc(appointmentRef, {
+    scheduledDate,
+    scheduledTime,
+    status: "Pendente",
+    updatedAt: serverTimestamp(),
+  });
+}
+
 export async function deleteAppointment(appointmentId) {
   await deleteDoc(doc(db, APPOINTMENTS_COLLECTION, appointmentId));
 }

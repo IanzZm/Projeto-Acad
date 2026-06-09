@@ -10,6 +10,7 @@ import {
   formatAppointmentMonth,
   getTodayIsoDate,
   listFutureAppointments,
+  updateAppointmentSchedule,
 } from "../../../../services/appointments";
 import styles from "./styles.module.css";
 
@@ -98,6 +99,9 @@ export function AppointmentsSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [expandedAppointmentId, setExpandedAppointmentId] = useState("");
+  const [reschedulingAppointmentId, setReschedulingAppointmentId] = useState("");
+  const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
 
   const availableDays = useMemo(() => {
     const daysInMonth = getDaysInMonth(selectedYear, selectedMonth);
@@ -129,10 +133,11 @@ export function AppointmentsSection() {
       .filter(
         (appointment) =>
           appointment.scheduledDate === selectedDate &&
+          appointment.id !== reschedulingAppointmentId &&
           appointment.status !== "Cancelado",
       )
       .map((appointment) => appointment.scheduledTime);
-  }, [appointments, selectedDate]);
+  }, [appointments, reschedulingAppointmentId, selectedDate]);
 
   const formattedDate = useMemo(
     () => formatAppointmentDate(selectedDate),
@@ -225,6 +230,35 @@ export function AppointmentsSection() {
     setFeedback("");
   }
 
+  function handleViewDetails(appointmentId) {
+    setExpandedAppointmentId((currentAppointmentId) =>
+      currentAppointmentId === appointmentId ? "" : appointmentId,
+    );
+  }
+
+  function handleRescheduleAppointment(appointment) {
+    const [year, month, day] = appointment.scheduledDate.split("-").map(Number);
+
+    if (!year || !month || !day) {
+      setFeedback("Nao foi possivel carregar a data desse agendamento.");
+      return;
+    }
+
+    setSelectedYear(year);
+    setSelectedMonth(month - 1);
+    setSelectedDay(day);
+    setSelectedTime(appointment.scheduledTime);
+    setReschedulingAppointmentId(appointment.id);
+    setIsRescheduleModalOpen(true);
+    setFeedback("");
+  }
+
+  function handleCancelReschedule() {
+    setReschedulingAppointmentId("");
+    setIsRescheduleModalOpen(false);
+    setFeedback("");
+  }
+
   async function handleCreateAppointment() {
     if (!currentStudent) {
       setFeedback("Entre com uma conta cadastrada para confirmar o agendamento.");
@@ -238,6 +272,32 @@ export function AppointmentsSection() {
 
     try {
       setIsSaving(true);
+
+      if (reschedulingAppointmentId) {
+        await updateAppointmentSchedule(reschedulingAppointmentId, {
+          scheduledDate: selectedDate,
+          scheduledTime: selectedTime,
+        });
+
+        setAppointments((currentAppointments) =>
+          currentAppointments
+            .map((appointment) =>
+              appointment.id === reschedulingAppointmentId
+                ? {
+                    ...appointment,
+                    scheduledDate: selectedDate,
+                    scheduledTime: selectedTime,
+                    status: "Pendente",
+                  }
+                : appointment,
+            )
+            .sort(sortAppointments),
+        );
+        setReschedulingAppointmentId("");
+        setIsRescheduleModalOpen(false);
+        setFeedback("Agendamento remarcado com sucesso.");
+        return;
+      }
 
       // Este e o ponto em que o agendamento sai da tela e vira documento no Firestore.
       // Depois que o banco confirma, eu atualizo a lista local para aparecer em "Seus horarios".
@@ -286,6 +346,7 @@ export function AppointmentsSection() {
 
                 <div className={styles.appointmentInfo}>
                   <h4>{appointment.title}</h4>
+                  <p>{formatAppointmentDate(appointment.scheduledDate)}</p>
                   <p>{appointment.scheduledTime}</p>
                   <p>{appointment.type}</p>
                   <span className={getStatusClass(appointment.status)}>
@@ -293,11 +354,36 @@ export function AppointmentsSection() {
                   </span>
                 </div>
 
+                {expandedAppointmentId === appointment.id ? (
+                  <div className={styles.appointmentDetails}>
+                    <p>
+                      Status atual: <strong>{appointment.status}</strong>
+                    </p>
+                    <p>
+                      Atendimento: <strong>{appointment.type}</strong>
+                    </p>
+                    <p>
+                      Email: <strong>{appointment.studentEmail}</strong>
+                    </p>
+                  </div>
+                ) : null}
+
                 <div className={styles.cardActions}>
-                  <button type="button" className={styles.secondaryButton}>
-                    Ver detalhes
+                  <button
+                    type="button"
+                    className={styles.secondaryButton}
+                    onClick={() => handleViewDetails(appointment.id)}
+                  >
+                    {expandedAppointmentId === appointment.id
+                      ? "Ocultar detalhes"
+                      : "Ver detalhes"}
                   </button>
-                  <button type="button" className={styles.textButton}>
+                  <button
+                    type="button"
+                    className={styles.textButton}
+                    onClick={() => handleRescheduleAppointment(appointment)}
+                    disabled={appointment.status === "Cancelado"}
+                  >
                     Remarcar
                   </button>
                 </div>
@@ -400,6 +486,133 @@ export function AppointmentsSection() {
           </div>
         </div>
       </section>
+
+      {isRescheduleModalOpen ? (
+        <div className={styles.modalOverlay} role="presentation">
+          <section
+            className={styles.rescheduleModal}
+            aria-labelledby="reschedule-title"
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className={styles.modalHeader}>
+              <div>
+                <span>Painel do aluno</span>
+                <h3 id="reschedule-title">Remarcar agendamento</h3>
+                <p>Escolha uma nova data e horario para este atendimento.</p>
+              </div>
+
+              <button
+                type="button"
+                className={styles.closeButton}
+                onClick={handleCancelReschedule}
+                aria-label="Fechar remarcacao"
+              >
+                x
+              </button>
+            </div>
+
+            <div className={styles.scheduler}>
+              <div className={styles.calendarPanel}>
+                <span className={styles.stepLabel}>1. Escolha uma data</span>
+
+                <div className={styles.monthSwitcher}>
+                  <button
+                    type="button"
+                    onClick={() => handleMonthChange(-1)}
+                    aria-label="Mes anterior"
+                    disabled={isCurrentMonth}
+                  >
+                    &lt;
+                  </button>
+                  <strong>
+                    {months[selectedMonth]} {selectedYear}
+                  </strong>
+                  <button
+                    type="button"
+                    onClick={() => handleMonthChange(1)}
+                    aria-label="Proximo mes"
+                  >
+                    &gt;
+                  </button>
+                </div>
+
+                <div className={styles.daysGrid}>
+                  {availableDays.map((day) => {
+                    const isPastDay = isPastDate(selectedYear, selectedMonth, day);
+
+                    return (
+                      <button
+                        key={day}
+                        type="button"
+                        className={
+                          day === selectedDay ? styles.selectedDay : styles.dayButton
+                        }
+                        onClick={() => handleDaySelect(day)}
+                        disabled={isPastDay}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className={styles.detailsPanel}>
+                <div>
+                  <span className={styles.stepLabel}>2. Escolha um horario</span>
+
+                  <div className={styles.timesGrid}>
+                    {availableTimes.map((time) => {
+                      const isUnavailable = unavailableTimes.includes(time);
+
+                      return (
+                        <button
+                          key={time}
+                          type="button"
+                          className={
+                            time === selectedTime
+                              ? styles.selectedTime
+                              : styles.timeButton
+                          }
+                          onClick={() => handleTimeSelect(time)}
+                          disabled={isUnavailable}
+                        >
+                          {time}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className={styles.confirmation}>
+                  <span className={styles.stepLabel}>3. Salvar remarcacao</span>
+                  <p>
+                    Voce esta remarcando a avaliacao fisica para o dia{" "}
+                    <strong>{formattedDate}</strong>, as{" "}
+                    <strong>{selectedTime}</strong>.
+                  </p>
+                  {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
+                  <button
+                    type="button"
+                    className={styles.cancelRescheduleButton}
+                    onClick={handleCancelReschedule}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCreateAppointment}
+                    disabled={isSaving || unavailableTimes.includes(selectedTime)}
+                  >
+                    {isSaving ? "Salvando..." : "Salvar remarcacao"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }

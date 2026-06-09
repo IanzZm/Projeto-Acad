@@ -92,6 +92,25 @@
   font-weight: 800;
 }
 
+.appointmentDetails {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 14px;
+}
+
+.appointmentDetails p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.appointmentDetails strong {
+  color: #111827;
+}
+
 .pendingStatus {
   background: #fffbeb;
   color: #b45309;
@@ -130,6 +149,11 @@
 
 .textButton {
   color: #f97316;
+}
+
+.textButton:disabled {
+  color: #9ca3af;
+  cursor: default;
 }
 
 .scheduler {
@@ -293,9 +317,85 @@
   padding: 0 14px;
 }
 
+.confirmation .cancelRescheduleButton {
+  margin-right: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #4b5563;
+}
+
 .confirmation button:disabled {
   background: #9ca3af;
   cursor: default;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(17, 24, 39, 0.62);
+  padding: 24px;
+}
+
+.rescheduleModal {
+  width: min(100%, 940px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 28px 80px rgba(17, 24, 39, 0.32);
+  padding: 28px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.modalHeader span {
+  display: block;
+  margin-bottom: 8px;
+  color: #f97316;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.modalHeader p {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.closeButton {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #4b5563;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.closeButton:hover {
+  border-color: #f97316;
+  color: #f97316;
 }
 
 @media (max-width: 1100px) {
@@ -334,5 +434,18 @@
 
   .timesGrid {
     grid-template-columns: repeat(2, minmax(70px, 1fr));
+  }
+
+  .modalOverlay {
+    padding: 12px;
+  }
+
+  .rescheduleModal {
+    max-height: calc(100vh - 24px);
+    padding: 18px;
+  }
+
+  .modalHeader h3 {
+    font-size: 24px;
   }
 }

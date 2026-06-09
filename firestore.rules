@@ -46,7 +46,22 @@ service cloud.firestore {
         && request.resource.data.studentId == request.auth.uid
         && request.resource.data.studentEmail == request.auth.token.email;
 
-      allow update, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (
+          signedIn()
+          && resource.data.studentId == request.auth.uid
+          && request.resource.data.studentId == resource.data.studentId
+          && request.resource.data.studentEmail == resource.data.studentEmail
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            "scheduledDate",
+            "scheduledTime",
+            "status",
+            "updatedAt"
+          ])
+          && request.resource.data.status == "Pendente"
+        );
+
+      allow delete: if isAdmin();
     }
 
     match /physicalEvaluations/{evaluationId} {
