@@ -80,7 +80,8 @@
   color: var(--color-muted);
   font-size: 13px;
   line-height: 1.6;
-  padding-right: 34px;
+  /* Aumentado de 34px para 50px ou mais, para o texto não encostar no botão de 38px */
+  padding-right: 50px; 
   text-align: justify;
 }
 

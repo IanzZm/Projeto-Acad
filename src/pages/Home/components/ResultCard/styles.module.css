@@ -10,8 +10,8 @@
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 24px 70px rgba(16, 24, 39, 0.2);
+  transform: translateY(-2px) scale(1.00);
+  box-shadow: 0 26px 75px rgba(16, 24, 39, 0.22);
 }
 
 .cardImage {
@@ -20,11 +20,6 @@
   object-fit: cover;
   object-position: top center;
   display: block;
-  transition: transform 0.35s ease;
-}
-
-.card:hover .cardImage {
-  transform: scale(1.04);
 }
 
 .cardContent {
@@ -65,12 +60,10 @@
 @keyframes cardReveal {
   from {
     opacity: 0;
-    transform: translateY(24px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
