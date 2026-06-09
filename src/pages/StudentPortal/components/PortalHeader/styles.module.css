@@ -27,3 +27,13 @@
   font-weight: 700;
   color: #111827;
 }
+
+@media (max-width: 700px) {
+  .header {
+    gap: 14px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+}

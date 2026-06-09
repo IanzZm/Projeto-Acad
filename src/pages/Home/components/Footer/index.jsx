@@ -22,7 +22,7 @@ export function Footer() {
         </nav>
 
         <div className={styles.contact}>
-          <a href="tel:+558498588872">+55 84 9858-8872</a>
+          <a href="tel:+5584998588871">+55 84 99858-8871</a>
           <a href="mailto:luistavares.profissional@gmail.com">
             luistavares.profissional@gmail.com
           </a>

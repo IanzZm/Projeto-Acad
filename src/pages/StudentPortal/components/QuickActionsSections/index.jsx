@@ -14,7 +14,7 @@ const quickActions = [
     title: "Falar com personal",
     description: "Tire dúvidas ou solicite ajustes",
     action: "Entre em contato",
-    href: "https://wa.me/5500000000000?text=Ol%C3%A1%2C%20quero%20falar%20com%20meu%20personal",
+    href: "https://wa.me/5584998588871?text=Ol%C3%A1%2C%20quero%20falar%20com%20meu%20personal",
     icon: "message",
     tone: "neutral",
   },

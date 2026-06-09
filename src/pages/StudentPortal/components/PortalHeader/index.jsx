@@ -6,10 +6,10 @@ export function PortalHeader() {
   return (
     <header className={styles.header}>
       <Link to="/" className={styles.brand} aria-label="Voltar para home">
-        <img src={logo} alt="Luís" />
+        <img src={logo} alt="Luis" />
       </Link>
 
-      <h1>Área do Aluno</h1>
+      <h1>Area do Aluno</h1>
     </header>
   );
 }
