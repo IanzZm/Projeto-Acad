@@ -4,8 +4,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 
@@ -86,9 +88,12 @@ export function formatAppointmentDay(isoDate) {
   return Number(isoDate.split("-")[2]);
 }
 
-export async function listFutureAppointments() {
+export async function listFutureAppointments(studentId) {
   const todayIsoDate = getTodayIsoDate();
-  const snapshot = await getDocs(getAppointmentsCollection());
+  const appointmentsQuery = studentId
+    ? query(getAppointmentsCollection(), where("studentId", "==", studentId))
+    : getAppointmentsCollection();
+  const snapshot = await getDocs(appointmentsQuery);
 
   // Mantive o filtro no front por enquanto para evitar precisar criar indice composto
   // no Firestore nesta fase inicial do projeto.

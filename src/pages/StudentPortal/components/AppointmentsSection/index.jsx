@@ -5,7 +5,6 @@ import { auth, db } from "../../../../config/firebase";
 import {
   buildIsoDate,
   createAppointment,
-  deleteExpiredAppointments,
   formatAppointmentDate,
   formatAppointmentDay,
   formatAppointmentMonth,
@@ -156,15 +155,11 @@ export function AppointmentsSection() {
       try {
         setIsLoading(true);
 
-        // Limpa agendamentos que ja passaram antes de buscar a lista atual.
-        // Assim, quando virar o dia, os horarios antigos deixam de aparecer.
-        await deleteExpiredAppointments();
-
         const userSnapshot = await getDoc(doc(db, "users", user.uid));
         const profileName = userSnapshot.exists()
           ? userSnapshot.data().name
           : "";
-        const futureAppointments = await listFutureAppointments();
+        const futureAppointments = await listFutureAppointments(user.uid);
 
         setCurrentStudent({
           uid: user.uid,

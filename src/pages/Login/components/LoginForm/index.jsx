@@ -5,11 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, db, provider } from "../../../../config/firebase";
 import styles from "./styles.module.css";
 
-const fakeUsers = [
-  { email: "professor@email.com", password: "123456", role: "admin" },
-  { email: "aluno@email.com", password: "123456", role: "aluno" },
-];
-
 export function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -44,15 +39,6 @@ export function LoginForm() {
 
   async function handleLogin(event) {
     event.preventDefault();
-
-    const fakeUser = fakeUsers.find(
-      (user) => user.email === email && user.password === password
-    );
-
-    if (fakeUser) {
-      redirectByRole(fakeUser.role);
-      return;
-    }
 
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
